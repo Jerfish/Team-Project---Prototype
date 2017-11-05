@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Helpdesk Prototype Team 11</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.container-fluid{
+  display:flex;
+  margin: 0 -15px;
+}
+
+.nav.nav-pill.nav-stacked{
+  width:15%
+}
+
+#main-content{
+  width:85%;
+  padding:0 15px;
+}
+
+</style>
+
 </head>
 <body>
   <!-- First layer of tabs -->
-  <div class="container">
-    <ul class="nav nav-pills nav-stacked">
+  <div class="container-fluid" id="container">
+    <ul class="nav nav-pills nav-stacked" id="navigation-bar">
       <li class="active"><a data-toggle="pill" href="#add">Add Project</a></li>
       <li><a data-toggle="pill" href="#projects">Projects</a></li>
       <li><a data-toggle="pill" href="#specialists">Specialists</a></li>
@@ -29,7 +46,7 @@
           <li><a href="#third" data-toggle="tab">Third</a></li>
         </ul>
         <!-- Second layer of tabs content -->
-        <div class="tab-content">
+        <div class="tab-content" id="main-content">
           <div id="first" class="tab-pane active">
             <!--Form with text boxes for entry -->
             <form>
