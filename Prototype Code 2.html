@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Helpdesk Prototype Team 11</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.container-fluid{
+  display:flex;
+  margin: 0 -15px;
+}
+
+.nav.nav-pill.nav-stacked{
+  width:15%
+}
+
+#main-content{
+  width:85%;
+  padding:0 15px;
+}
+
+</style>
+
+</head>
+<body>
+  <!-- First layer of tabs -->
+  <div class="container-fluid" id="container">
+    <ul class="nav nav-pills nav-stacked" id="navigation-bar">
+      <li class="active"><a data-toggle="pill" href="#add">New Problem</a></li>
+      <li><a data-toggle="pill" href="#problems">Problems List</a></li>
+      <li><a data-toggle="pill" href="#specialists">Specialists List</a></li>
+      <li><a data-toggle="pill" href="#equipment">Hardware/Software List</a></li>
+    </ul>
+
+      <!-- First layer of tabs content -->
+    <div class="tab-content">
+
+      <!-- Add Project Tab -->
+      <div id="add" class="tab-pane fade in active">
+        <!-- Second layer of tabs- horizontal ones inside the add project tab -->
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#first" data-toggle="tab">Required Information</a></li>
+          <li><a href="#second" data-toggle="tab">Additional Information</a></li>
+          <li><a href="#third" data-toggle="tab">Problem Description</a></li>
+        </ul>
+        <!-- Second layer of tabs content -->
+        <div class="tab-content" id="main-content">
+          <div id="first" class="tab-pane active">
+            <!--Form with text boxes for entry -->
+			Only one of the hardware or software affected forms should show up,
+            <form>
+              <div class="form-group">
+                <label for="caller">Caller Name</label>
+                <input type="text" class="form-control" id="caller" placeholder="Joe Bloggs">
+                <label for="operator">Helpdesk Operator Name</label>
+                <input type="text" class="form-control" id="operator" placeholder="Alice Smith">
+                <label for="time">Call Time/Date</label>
+                <input type="text" class="form-control" id="time" placeholder="06/11/2017 18:50">
+                <label for="serial">Reason for Call</label>
+                <input type="text" class="form-control" id="serial" placeholder="Printer is not Working...">
+				<label for="hardware/software">Hardware/Software</label>
+				<select class="form-control" id="hardware/software" placeholder="Hardware or Software problem">
+					<option>Hardware</option>
+					<option>Software</option>
+				</select>
+                <label for="os">Hardware Affected</label>
+                <input type="text" class="form-control" id="os" placeholder="Kodak Printer">
+                <label for="software">Software Affected</label>
+                <input type="text" class="form-control" id="software" placeholder="Photoshop">
+                <label for="reason">Operating System</label>
+                <input type="text" class="form-control" id="reason" placeholder="Windows/Mac OS/Linux">
+                <label for="type">Problem Type</label>
+                <input type="text" class="form-control" id="type" placeholder="Please select most appropriate">
+              </div>
+            </form>
+          </div>
+
+          <!-- The other horizontal tabs in add project -->
+          <div id="second" class="tab-pane">Forms for extra information not necessary when problem first created but added later if possible, show up when problem selected from list</div>
+          <div id="third" class="tab-pane">Text box for entering a problem description/overview, shows up when a problem is selected from problem list</div>
+        </div>
+
+      <!-- The other vertical tabs -->
+      </div>
+      <div id="problems" class="tab-pane fade">
+        <h3>Problems List</h3>
+        <p>List/Table of Problems with required/key information displayed, when a problem is pressed it should either open a window or generate a page with all info on the problem</p>
+      </div>
+      <div id="specialists" class="tab-pane fade">
+        <h3>Specialists</h3>
+        <p>Similar list/table of Specialists as with Problems List, could have similar system with only key information (Specialism, no. current problems etc.) and more when clicked on</p>
+      </div>
+      <div id="equipment" class="tab-pane fade">
+        <h3>Hardware/Software List</h3>
+        <p>Have two tabs, one for hardware one for software, each has table/list of hardware and software with info, probably won't need extra when clicked as not much information for either</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
