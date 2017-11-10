@@ -7,6 +7,73 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
+		var ProblemData = []
+		var NextProbID = 124;
+		
+		//DELET THIS (Unnecessary for this)
+		/*function FindCurrentProbID(Row){
+			var row = $(#problemTable > tbody:first tr:nth-child(Row) td:last).val();
+			
+			ProblemData[Row] = 
+		}*/
+		
+		$(document).ready(function(){
+			$("#RequiredInfoForm").submit(function (event){
+			
+				var Status;
+				var TrClass;
+				
+				event.preventDefault();
+				
+				//Pull data from the form
+				var CallerName = $("#RequiredInfoForm #caller").val();
+				var OperatorName = $("#RequiredInfoForm #operator").val();
+				var CallDateTime = $("#RequiredInfoForm #time").val();
+				var Reason = $("#RequiredInfoForm #reason").val();
+				var HardSoft = $("#RequiredInfoForm #hardwaresoftware option:selected").val();
+				var Hardware = $("#RequiredInfoForm #hardware").val();
+				var Software = $("#RequiredInfoForm #software").val();
+				var OS = $("#RequiredInfoForm #os").val();
+				var ProbType = $("#RequiredInfoForm #type").val();
+				
+				var CallerID = $("#ExtraInfoForm #callerId").val();
+				var CallerJob = $("#ExtraInfoForm #callerJob").val();
+				var CallerDept = $("#ExtraInfoForm #callerDept").val();
+				var CallerTelNum = $("#ExtraInfoForm #callerTelNum").val();
+				var HardwareSerial = $("#ExtraInfoForm #hardwareSerial").val();
+				var SoftwareID = $("#ExtraInfoForm #softwareId").val();
+				var SoftwareLicence = $("#ExtraInfoForm #softwareLicence option:selected").val();
+				var SoftwareSupport = $("#ExtraInfoForm #softwareSupport option:selected").val();
+				var SpecialistID = $("#ExtraInfoForm #specialistId").val();
+				var SpecialistName = $("#ExtraInfoForm #specialistName").val();
+				
+				var ProblemDesc = $("#ProblemDescForm #problemDesc").val();
+				
+				//Going to next ProblemID
+				NextProbID ++;
+				
+				//Checking if a specialist has been assigned to the problem so it can be written into data
+				if (SpecialistID !== ""){
+					Status = "Pending";
+					TrClass = "warning";
+				}else{
+					Status = "Unassigned";
+					TrClass = "danger";
+				}
+				
+				//Write Data to array
+				//Update this with the status and extra data that is changed in the edit problem
+				ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc]
+				
+				//Appending data to the table				
+				$("#problemTable > tbody:first").append("<tr class='" + TrClass + "'><td>" + NextProbID + "</td><td>" + CallDateTime + "</td><td>" + CallerName + "</td><td>" + OperatorName + "</td><td>" + HardSoft + "</td><td>" + ProbType + "</td><td>" + SpecialistName + "</td><td>" + "N/A" + "</td><td>" + "N/A" + "</td><td>" + Status + "</td></tr>"); 
+				alert("Got to the end without crashing :)");
+			});
+			$("#TestButton").click(function(event){
+			event.preventDefault();
+				alert(CallerName);
+			});
+		});
         function sortTable(n) {
             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById("problemTable");
@@ -72,7 +139,7 @@
         }
 
         function hideOption() {
-            if (document.getElementById("hardware/software").selectedIndex == 1) {
+            if (document.getElementById("hardwaresoftware").selectedIndex == 1) {
                 document.getElementById("softwareLicence").style.display = "unset";
                 document.getElementById("softwareLicenceLabel").style.display = "unset";
                 document.getElementById("softwareSupport").style.display = "unset";
@@ -86,7 +153,7 @@
                 document.getElementById("hardwareSerial").style.display = "none";
                 document.getElementById("hardwareSerialLabel").style.display = "none";
             }
-            if (document.getElementById("hardware/software").selectedIndex == 0) {
+            if (document.getElementById("hardwaresoftware").selectedIndex == 0) {
                 document.getElementById("hardwareSerial").style.display = "unset";
                 document.getElementById("hardwareSerialLabel").style.display = "unset";
                 document.getElementById("hardwareLabel").style.display = "unset";
@@ -138,14 +205,14 @@
         <!-- First layer of tabs content -->
         <div class="tab-content">
 
-            <!-- Add Project Tab -->
+            <!-- Add Problem Tab -->
             <div if="home" class="tab-pane fade in active">
                 <h3>Home</h3>
                 Welcome to The Heldesk Prototype.
 
             </div>
             <div id="add" class="tab-pane fade">
-                <!-- Second layer of tabs- horizontal ones inside the add project tab -->
+                <!-- Second layer of tabs- horizontal ones inside the add problem tab -->
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#required" data-toggle="tab">Required Information</a></li>
                     <li><a href="#additional" data-toggle="tab">Additional Information</a></li>
@@ -155,7 +222,7 @@
                 <div class="tab-content" id="main-content">
                     <div id="required" class="tab-pane active">
                         <!--Form with mandatory text boxes for entry -->
-                        <form>
+                        <form id="RequiredInfoForm" >
                             <div class="form-group">
                                 <label for="caller">Caller Name</label>
                                 <input type="text" class="form-control" id="caller" placeholder="Joe Bloggs">
@@ -166,10 +233,10 @@
                                 <label for="serial">Reason for Call</label>
                                 <input type="text" class="form-control" id="reason" placeholder="Printer is not Working...">
                                 <label for="hardware/software">Hardware/Software</label>
-                                <select class="form-control" id="hardware/software" placeholder="Hardware or Software problem" onchange="hideOption()">
-					<option>Hardware</option>
-					<option>Software</option>
-				</select>
+                                <select class="form-control" id="hardwaresoftware" placeholder="Hardware or Software problem" onchange="hideOption()">
+									<option>Hardware</option>
+									<option>Software</option>
+								</select>
                                 <label for="hardware" id="hardwareLabel">Hardware Affected</label>
                                 <input type="text" class="form-control" id="hardware" placeholder="Kodak Printer">
                                 <label for="software" id="softwareLabel" style="display:none">Software Affected</label>
@@ -179,17 +246,17 @@
                                 <label for="type">Problem Type</label>
                                 <input type="text" class="form-control" id="type" placeholder="Please select most appropriate">
                                 <div class="spacer"></div>
-                                <button id="firstPageSubmit" type="submit" class="btn btn-default">Submit</button>
+                                <input type="submit" id="firstPageSubmit" class="btn btn-default"/>
                             </div>
                         </form>
                     </div>
 
                     <!--Form with non-mandatory text boxes for entry, fillable later in editing -->
                     <div id="additional" class="tab-pane">
-                        <form>
+                        <form id="ExtraInfoForm">
                             <div class="form-group">
                                 <label for="callerId">Caller ID</label>
-                                <input type="text" class="form-control" id="callerId" placeholder="Joe Bloggs">
+                                <input type="text" class="form-control" id="callerId" placeholder="p343231">
                                 <label for="callerJob">Caller Job</label>
                                 <input type="text" class="form-control" id="callerJob" placeholder="Programmer">
                                 <label for="callerDept">Caller Department</label>
@@ -202,32 +269,32 @@
                                 <input type="text" class="form-control" id="softwareId" placeholder="Photoshop" style="display:none">
                                 <label for="softwareLicence" id="softwareLicenceLabel" style="display:none">Software Licenced?</label>
                                 <select class="form-control" id="softwareLicence" placeholder="Select an option" style="display:none">
-					<option>Yes</option>
-					<option>No</option>
-				</select>
+									<option>Yes</option>
+									<option>No</option>
+								</select>
                                 <label for="softwareSupport" id="softwareSupportLabel" style="display:none">Software Supported?</label>
                                 <select class="form-control" id="softwareSupport" placeholder="Select an option" style="display:none">
-					<option>Yes</option>
-					<option>No</option>				
-				</select>
+									<option>Yes</option>
+									<option>No</option>				
+								</select>
                                 <label for="specialistId" id="specialistIdLabel">Assigned Specialist ID</label>
                                 <input type="text" class="form-control" id="specialistId" placeholder="S10987">
                                 <label for="specialistName" id="specialistNameLabel">Assigned Specialist Name</label>
                                 <input type="text" class="form-control" id="specialistName" placeholder="John Peters">
                                 <div class="spacer"></div>
-                                <button id="secondPageSubmit" type="submit" class="btn btn-default">Submit</button>
+                                
                             </div>
                         </form>
                     </div>
 
                     <!-- Final New Problem Tab for entering description, available on selecting problem from list -->
                     <div id="description" class="tab-pane">
-                        <form>
+                        <form id="ProblemDescForm">
                             <div class="form-group">
                                 <label for="problemDesc" id="problemDescLabel">Problem Description</label>
                                 <input type="textarea" rows="1000" cols="1000" class="form-control" id="problemDesc" placeholder="Please enter a description of the problem">
                                 <div class="spacer"></div>
-                                <button id="thirdPageSubmit" type="submit" class="btn btn-default">Submit</button>
+                                
                             </div>
                         </form>
                     </div>
@@ -269,7 +336,7 @@
                                 <td>Solved</td>
                             </tr>
 
-                            <tr onclick="alert('Billy Squier')" class="danger">
+                            <tr onclick="alert('Billy Squier')" class="warning">
                                 <td class="problemID" id="124">124</td>
                                 <td>5/11/17 9.20am</td>
                                 <td>Billy Squier</td>
@@ -294,7 +361,7 @@
                                 <td>Solved</td>
                             </tr>
 
-                            <tr onclick="alert('Billy Squier')" class="danger">
+                            <tr onclick="alert('Billy Squier')" class="warning">
                                 <td class="problemID" id="124">124</td>
                                 <td>5/11/17 9.20am</td>
                                 <td>Billy Squier</td>
@@ -306,7 +373,10 @@
                                 <td>N/A</td>
                                 <td>Pending</td>
                             </tr>
-                            <span id="newContent"></span>
+                            <!-- I haven't used the span for adding new rows to the table
+							<span id="newContent"></span>
+							-->
+							
                         </tbody>
                     </table>
                 </div>
