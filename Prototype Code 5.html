@@ -74,9 +74,9 @@
 				alert(CallerName);
 			});
 		});
-        function sortTable(n) {
+        function sortTable(n, i) {
             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-            table = document.getElementById("problemTable");
+            table = document.getElementById(i);
             switching = true;
             //Set the sorting direction to ascending:
             dir = "asc";
@@ -129,6 +129,90 @@
             }
         }
 
+        function filterProblemTable() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("problemSearch");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("problemTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
+   
+        function filterSoftwareTable() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("softwareSearch");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("softwareTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
+        
+        function filterHardwareTable() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("hardwareSearch");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("hardwareTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
+        
+        function filterSpecialistTable() {
+  // Declare variables 
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("specialistSearch");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("specialistTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+}
+        
         function loadProblem(n) {
             document.getElementById("probListTab").className = "unset";
             document.getElementById("viewProbTab").className += " active";
@@ -206,7 +290,7 @@
         <div class="tab-content">
 
             <!-- Add Problem Tab -->
-            <div if="home" class="tab-pane fade in active">
+            <div id="home" class="tab-pane fade in active">
                 <h3>Home</h3>
                 Welcome to The Heldesk Prototype.
 
@@ -306,26 +390,38 @@
                 <div id="problemList" class="">
                     <!--Form with mandatory text boxes for entry -->
                     <h3>Problems List</h3>
-                    <p>Table/List of Problems with Problem ID, Caller Name/ID, Helpdesk Name/ID, Call Time, Status (Unassigned, Pending, Solved) When clicked on opens window with all information from forms not listed including completion time if completed</p>
+                    <input type="text" id="problemSearch" onkeyup="filterProblemTable()" placeholder="Search for IDs..">
                     <table id="problemTable" class="table table-hover">
                         <thead>
                             <tr>
-                                <th onclick="sortTable(0)">Problem ID</th>
-                                <th onclick="sortTable(1)">Date/Time opened</th>
-                                <th onclick="sortTable(2)">Name/ID of initial caller</th>
-                                <th onclick="sortTable(3)">Name/ID of helpdesk operator</th>
-                                <th onclick="sortTable(4)">Hardware/Software</th>
-                                <th onclick="sortTable(5)">Problem Type</th>
-                                <th onclick="sortTable(6)">Specialist Assigned</th>
-                                <th onclick="sortTable(7)">Date/Time of Solution</th>
-                                <th onclick="sortTable(8)">Name of Solver</th>
-                                <th onclick="sortTable(9)">Status</th>
+                                <th onclick="sortTable(0,'problemTable')">Problem ID</th>
+                                <th onclick="sortTable(1,'problemTable')">Date/Time opened</th>
+                                <th onclick="sortTable(2,'problemTable')">Name/ID of initial caller</th>
+                                <th onclick="sortTable(3,'problemTable')">Name/ID of helpdesk operator</th>
+                                <th onclick="sortTable(4,'problemTable')">Hardware/Software</th>
+                                <th onclick="sortTable(5,'problemTable')">Problem Type</th>
+                                <th onclick="sortTable(6,'problemTable')">Specialist Assigned</th>
+                                <th onclick="sortTable(7,'problemTable')">Date/Time of Solution</th>
+                                <th onclick="sortTable(8,'problemTable')">Solved By</th>
+                                <th onclick="sortTable(9,'problemTable')">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr onclick="alert('Sean Murphy');" class="success">
-                                <td class="problemID" id="123">123</td>
+                                <td>119</td>
                                 <td>5/11/17 8.55am</td>
+                                <td>Geri Halliwell</td>
+                                <td>Alice</td>
+                                <td>Software</td>
+                                <td>Photoshop</td>
+                                <td>Kenny Loggins</td>
+                                <td>5/11/17 12.14pm</td>
+                                <td>Kenny Loggins</td>
+                                <td>Solved</td>
+                            </tr>
+                            <tr onclick="alert('Sean Murphy');" class="success">
+                                <td class="problemID" id="123">120</td>
+                                <td>5/11/17 9.23am</td>
                                 <td>Sean Murphy</td>
                                 <td>Alice</td>
                                 <td>Hardware</td>
@@ -335,10 +431,9 @@
                                 <td>Dean Fume</td>
                                 <td>Solved</td>
                             </tr>
-
                             <tr onclick="alert('Billy Squier')" class="warning">
-                                <td class="problemID" id="124">124</td>
-                                <td>5/11/17 9.20am</td>
+                                <td class="problemID" id="124">121</td>
+                                <td>5/11/17 9.34am</td>
                                 <td>Billy Squier</td>
                                 <td>Alice</td>
                                 <td>Hardware</td>
@@ -349,41 +444,98 @@
                                 <td>Pending</td>
                             </tr>
                             <tr onclick="alert('Sean Murphy');" class="success">
-                                <td class="problemID" id="123">123</td>
-                                <td>5/11/17 8.55am</td>
+                                <td class="problemID" id="125">122</td>
+                                <td>5/11/17 9.57am</td>
                                 <td>Sean Murphy</td>
                                 <td>Alice</td>
                                 <td>Hardware</td>
                                 <td>Printing</td>
                                 <td>Dean Fume</td>
-                                <td>5/11/17 9.37am</td>
+                                <td>5/11/17 10.07am</td>
                                 <td>Dean Fume</td>
                                 <td>Solved</td>
                             </tr>
 
                             <tr onclick="alert('Billy Squier')" class="warning">
-                                <td class="problemID" id="124">124</td>
-                                <td>5/11/17 9.20am</td>
+                                <td class="problemID" id="124">123</td>
+                                <td>5/11/17 10.03am</td>
                                 <td>Billy Squier</td>
                                 <td>Alice</td>
                                 <td>Hardware</td>
-                                <td>Printing Jam</td>
-                                <td>Ray Parker Jr.</td>
+                                <td>Servers</td>
+                                <td>Kenny Loggins</td>
                                 <td>N/A</td>
                                 <td>N/A</td>
                                 <td>Pending</td>
                             </tr>
-                            <!-- I haven't used the span for adding new rows to the table
-							<span id="newContent"></span>
-							-->
-							
+                            <tr onclick="alert('Sean Murphy');" class="danger">
+                                <td>124</td>
+                                <td>5/11/17 11.47am</td>
+                                <td>Billy Joel</td>
+                                <td>Alice</td>
+                                <td>Software</td>
+                                <td>Microsoft Access</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>Unassigned</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div id="specialists" class="tab-pane fade">
                 <h3>Specialists</h3>
-                <p>Table/List of Specialists with Specialist ID, Specialism, No. Current Problems, No. Completed Problems, Personnel ID</p>
+                <input type="text" id="specialistSearch" onkeyup="filterSpecialistTable()" placeholder="Search for IDs..">
+                <table id="specialistTable" class="table table-hover table-striped">
+<thead>
+<tr>
+<th onclick="sortTable(0,'specialistTable')">Specialist ID</th>
+<th onclick="sortTable(1,'specialistTable')">Name of Specialist</th>
+<th onclick="sortTable(2,'specialistTable')">Specialism</th>
+<th onclick="sortTable(3,'specialistTable')">No. of Current problems</th>
+<th onclick="sortTable(4,'specialistTable')">No. Completed Problems</th>
+<th onclick="sortTable(5,'specialistTable')">Personnel ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>303</td>
+<td>Dean Fume</td>
+<td>Printing, Servers</td>
+<td>0</td>
+<td>2</td>
+<td>1243</td>
+</tr>
+
+<tr>
+<td>304</td>
+<td>Ray Parker Jr.</td>
+<td>Printing Jam, Adobe Studio</td>
+<td>1</td>
+<td>1</td>
+<td>1203</td>
+</tr>
+    
+<tr>
+<td>305</td>
+<td>Daryl Hall</td>
+<td>Microsoft Office</td>
+<td>0</td>
+<td>0</td>
+<td>1301</td>
+</tr>
+
+<tr>
+<td>306</td>
+<td>Kenny Loggins</td>
+<td>Photoshop, Servers</td>
+<td>1</td>
+<td>1</td>
+<td>1343</td>
+</tr>
+</tbody>
+</table>
             </div>
             <div id="equipment" class="tab-pane fade">
 
@@ -396,10 +548,88 @@
                 <!-- Hardware and Software tab content -->
                 <div class="tab-content" id="main-content">
                     <div id="hardwareTab" class="tab-pane active">
-                        Table/list of hardware with Hardware ID, Hardware Type, Make, Serial No., Personnel ID
+                        <input type="text" id="hardwareSearch" onkeyup="filterHardwareTable()" placeholder="Search for Types..">
+                        <table id="hardwareTable" class="table table-hover table-striped">
+<thead>
+<tr>
+<th onclick="sortTable(0,'hardwareTable')">Hardware ID</th>
+<th onclick="sortTable(1,'hardwareTable')">Hardware Type</th>
+<th onclick="sortTable(2,'hardwareTable')">Make</th>
+<th onclick="sortTable(3,'hardwareTable')">Serial No.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0023</td>
+<td>Switch</td>
+<td>Cisco</td>
+<td>01234675</td>
+</tr>
+
+<tr>
+<td>0024</td>
+<td>Distro</td>
+<td>HP</td>
+<td>113467869</td>
+</tr>
+    
+<tr>
+<td>0025</td>
+<td>Printer</td>
+<td>Industrial Ink Inc.</td>
+<td>09237845673</td>
+</tr>
+
+<tr>
+<td>0026</td>
+<td>Router</td>
+<td>NETGEAR</td>
+<td>1125364781A</td>
+</tr>
+</tbody>
+</table>
                     </div>
                     <div id="softwareTab" class="tab-pane active">
-                        Table/List of software with Software ID, Software Type, Licenced, Supported, Personnel ID
+                        <input type="text" id="softwareSearch" onkeyup="filterSoftwareTable()" placeholder="Search for Types..">
+                        <table id="softwareTable" class="table table-hover table-striped">
+<thead>
+<tr>
+<th onclick="sortTable(0,'softwareTable')">Software ID</th>
+<th onclick="sortTable(1,'softwareTable')">Software Type</th>
+<th onclick="sortTable(2,'softwareTable')">Licenced</th>
+<th onclick="sortTable(3,'softwareTable')">Supported</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0043</td>
+<td>Project Management</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>0044</td>
+<td>Word Processing</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+    
+<tr>
+<td>0045</td>
+<td>Forum software</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>0046</td>
+<td>Freeware</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
                     </div>
                 </div>
             </div>
