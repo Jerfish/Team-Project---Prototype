@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Helpdesk Prototype Team 11</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+      
+      function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("problemTable");
+  switching = true;
+  //Set the sorting direction to ascending:
+  dir = "asc"; 
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("tr");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("td")[n];
+      y = rows[i + 1].getElementsByTagName("td")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;      
+    } else {
+      /*If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again.*/
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+      
+      function loadProblem(n){
+          document.getElementById("probListTab").className = "unset";
+          document.getElementById("viewProbTab").className += " active";
+          document.getElementById("problemList").className = "tab-pane";
+          document.getElementById("loadProblem").className = "tab-pane active";
+          document.getElementById("caller1").focus();
+          document.activeElement.value = n;
+      }
+      
+	function hideOption()
+	{
+		if(document.getElementById("hardware/software").selectedIndex == 1)
+			{
+				document.getElementById("softwareLicence").style.display = "unset";
+				document.getElementById("softwareLicenceLabel").style.display = "unset";			
+				document.getElementById("softwareSupport").style.display = "unset";
+				document.getElementById("softwareSupportLabel").style.display = "unset";					
+				document.getElementById("softwareLabel").style.display = "unset";			
+				document.getElementById("software").style.display = "unset";
+				document.getElementById("softwareIdLabel").style.display = "unset";			
+				document.getElementById("softwareId").style.display = "unset";				
+				document.getElementById("hardware").style.display = "none";
+				document.getElementById("hardwareLabel").style.display = "none";
+				document.getElementById("hardwareSerial").style.display = "none";
+				document.getElementById("hardwareSerialLabel").style.display = "none";				
+			}
+		if(document.getElementById("hardware/software").selectedIndex == 0)
+			{
+				document.getElementById("hardwareSerial").style.display = "unset";
+				document.getElementById("hardwareSerialLabel").style.display = "unset";				
+				document.getElementById("hardwareLabel").style.display = "unset";			
+				document.getElementById("hardware").style.display = "unset";
+				document.getElementById("software").style.display = "none";
+				document.getElementById("softwareLabel").style.display = "none";
+				document.getElementById("softwareId").style.display = "none";				
+				document.getElementById("softwareIdLabel").style.display = "none";			
+				document.getElementById("softwareLicence").style.display = "none";
+				document.getElementById("softwareLicenceLabel").style.display = "none";			
+				document.getElementById("softwareSupport").style.display = "none";
+				document.getElementById("softwareSupportLabel").style.display = "none";					
+			}		
+	}
+  </script>  
+<style>
+.container-fluid{
+  display:flex;
+  margin: 0 -15px;
+}
+.nav.nav-pill.nav-stacked{
+  width:15%
+}
+#main-content{
+  width:85%;
+  padding:0 15px;
+}
+.spacer{
+	height: 25px;
+}
+</style>
+
+</head>
+<body>
+  <!-- First layer of tabs -->
+  <div class="container-fluid" id="container">
+    <ul class="nav nav-pills nav-stacked" id="navigation-bar">
+      <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
+      <li ><a data-toggle="pill" href="#add">New Problem</a></li>
+      <li><a data-toggle="pill" href="#problems">Problems List</a></li>
+      <li><a data-toggle="pill" href="#specialists">Specialists List</a></li>
+      <li><a data-toggle="pill" href="#equipment">Hardware/Software List</a></li>
+    </ul>
+
+    <!-- First layer of tabs content -->
+    <div class="tab-content">
+
+      <!-- Add Project Tab -->
+      <div if="home" class="tab-pane fade in active">
+          <h3>Home</h3>
+        Welcome to The Heldesk Prototype.
+        
+        </div>
+      <div id="add" class="tab-pane fade">
+        <!-- Second layer of tabs- horizontal ones inside the add project tab -->
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#required" data-toggle="tab">Required Information</a></li>
+          <li><a href="#additional" data-toggle="tab">Additional Information</a></li>
+          <li><a href="#description" data-toggle="tab">Problem Description</a></li>
+        </ul>
+        <!-- Second layer of tabs content -->
+        <div class="tab-content" id="main-content">
+          <div id="required" class="tab-pane active">
+            <!--Form with mandatory text boxes for entry -->
+            <form>
+              <div class="form-group">
+                <label for="caller">Caller Name</label>
+                <input type="text" class="form-control" id="caller" placeholder="Joe Bloggs">
+                <label for="operator">Helpdesk Operator Name</label>
+                <input type="text" class="form-control" id="operator" placeholder="Alice Smith">
+                <label for="time">Call Time/Date</label>
+                <input type="text" class="form-control" id="time" placeholder="06/11/2017 18:50">
+                <label for="serial">Reason for Call</label>
+                <input type="text" class="form-control" id="reason" placeholder="Printer is not Working...">
+				<label for="hardware/software">Hardware/Software</label>
+				<select class="form-control" id="hardware/software" placeholder="Hardware or Software problem" onchange="hideOption()">
+					<option>Hardware</option>
+					<option>Software</option>
+				</select>
+                <label for="hardware" id="hardwareLabel">Hardware Affected</label>
+                <input type="text" class="form-control" id="hardware" placeholder="Kodak Printer">
+                <label for="software" id="softwareLabel" style="display:none">Software Affected</label>
+                <input type="text" class="form-control" id="software" placeholder="Photoshop" style="display:none">
+                <label for="reason">Operating System</label>
+                <input type="text" class="form-control" id="os" placeholder="Windows/Mac OS/Linux">
+                <label for="type">Problem Type</label>
+                <input type="text" class="form-control" id="type" placeholder="Please select most appropriate">
+				<div class="spacer"></div>
+				<button id="firstPageSubmit" type="submit" class="btn btn-default">Submit</button>				
+			  </div>
+            </form>
+          </div>
+
+          <!--Form with non-mandatory text boxes for entry, fillable later in editing -->
+          <div id="additional" class="tab-pane">
+            <form>
+              <div class="form-group">
+                <label for="callerId">Caller ID</label>
+                <input type="text" class="form-control" id="callerId" placeholder="Joe Bloggs">
+                <label for="callerJob">Caller Job</label>
+                <input type="text" class="form-control" id="callerJob" placeholder="Programmer">
+                <label for="callerDept">Caller Department</label>
+                <input type="text" class="form-control" id="callerDept" placeholder="Sales">
+                <label for="CallerTelNum">Caller Telephone Number</label>
+                <input type="text" class="form-control" id="callerTelNum" placeholder="07829473628">
+				<label for="hardwareSerial" id="hardwareSerialLabel">Hardware Serial Number</label>
+                <input type="text" class="form-control" id="hardwareSerial" placeholder="C-40392-B">
+                <label for="softwareId" id="softwareIdLabel" style="display:none">Software ID</label>
+                <input type="text" class="form-control" id="softwareId" placeholder="Photoshop" style="display:none">
+                <label for="softwareLicence" id="softwareLicenceLabel" style="display:none">Software Licenced?</label>
+                <select class="form-control" id="softwareLicence" placeholder="Select an option" style="display:none">
+					<option>Yes</option>
+					<option>No</option>
+				</select>
+                <label for="softwareSupport" id="softwareSupportLabel" style="display:none">Software Supported?</label>
+                <select class="form-control" id="softwareSupport" placeholder="Select an option" style="display:none">
+					<option>Yes</option>
+					<option>No</option>				
+				</select>
+                <label for="specialistId" id="specialistIdLabel">Assigned Specialist ID</label>
+                <input type="text" class="form-control" id="specialistId" placeholder="S10987">
+                <label for="specialistName" id="specialistNameLabel">Assigned Specialist Name</label>
+                <input type="text" class="form-control" id="specialistName" placeholder="John Peters">
+				<div class="spacer"></div>
+				<button id="secondPageSubmit" type="submit" class="btn btn-default">Submit</button>
+			  </div>
+            </form>
+		  </div>	
+		  
+		  <!-- Final New Problem Tab for entering description, available on selecting problem from list -->
+          <div id="description" class="tab-pane">
+			<form>
+				<div class="form-group">
+					<label for="problemDesc" id="problemDescLabel">Problem Description</label>
+					<input type="textarea" rows="1000" cols="1000" class="form-control" id="problemDesc" placeholder="Please enter a description of the problem">
+					<div class="spacer"></div>
+					<button id="thirdPageSubmit" type="submit" class="btn btn-default">Submit</button>					
+					</div>
+			</form>
+		  </div>
+        </div>
+
+      <!-- The other vertical tabs -->
+      </div>
+      <div id="problems" class="tab-pane fade">
+          <div id="problemList" class="">
+            <!--Form with mandatory text boxes for entry -->
+            <h3>Problems List</h3>
+        <p>Table/List of Problems with Problem ID, Caller Name/ID, Helpdesk Name/ID, Call Time, Status (Unassigned, Pending, Solved) When clicked on opens window with all information from forms not listed including completion time if completed</p>
+<table id="problemTable" class="table table-hover">
+<thead>
+<tr>
+<th onclick="sortTable(0)" >Problem ID</th>
+<th onclick="sortTable(1)">Date/Time opened</th>
+<th onclick="sortTable(2)">Name/ID of initial caller</th>
+<th onclick="sortTable(3)">Name/ID of helpdesk operator</th>
+<th onclick="sortTable(4)">Hardware/Software</th>
+<th onclick="sortTable(5)">Problem Type</th>
+<th onclick="sortTable(6)">Specialist Assigned</th>
+<th onclick="sortTable(7)">Date/Time of Solution</th>
+<th onclick="sortTable(8)">Name of Solver</th>
+<th onclick="sortTable(9)">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr onclick="alert('Sean Murphy');" class="success">
+<td class="problemID" id="123">123</td>
+<td>5/11/17 8.55am</td>
+<td>Sean Murphy</td>
+<td>Alice</td>
+    <td>Hardware</td>
+<td>Printing</td>
+<td>Dean Fume</td>
+<td>5/11/17 9.37am</td>
+<td>Dean Fume</td>
+<td>Solved</td>
+</tr>
+
+<tr onclick="alert('Billy Squier')" class="danger">
+<td class="problemID" id="124">124</td>
+<td>5/11/17 9.20am</td>
+<td>Billy Squier</td>
+<td>Alice</td>
+    <td>Hardware</td>
+<td>Printing Jam</td>
+<td>Ray Parker Jr.</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>Pending</td>
+</tr>
+<tr onclick="alert('Sean Murphy');" class="success">
+<td class="problemID" id="123">123</td>
+<td>5/11/17 8.55am</td>
+<td>Sean Murphy</td>
+<td>Alice</td>
+    <td>Hardware</td>
+<td>Printing</td>
+<td>Dean Fume</td>
+<td>5/11/17 9.37am</td>
+<td>Dean Fume</td>
+<td>Solved</td>
+</tr>
+
+<tr onclick="alert('Billy Squier')" class="danger">
+<td class="problemID" id="124">124</td>
+<td>5/11/17 9.20am</td>
+<td>Billy Squier</td>
+<td>Alice</td>
+    <td>Hardware</td>
+<td>Printing Jam</td>
+<td>Ray Parker Jr.</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>Pending</td>
+</tr>
+    <span id="newContent"></span>
+</tbody>
+</table>
+</div>
+</div>
+      <div id="specialists" class="tab-pane fade">
+        <h3>Specialists</h3>
+        <p>Table/List of Specialists with Specialist ID, Specialism, No. Current Problems, No. Completed Problems, Personnel ID</p>
+      </div>
+      <div id="equipment" class="tab-pane fade">
+	  
+        <!-- Hardware and Software tabs -->
+		<ul class="nav nav-tabs">
+          <li class="active"><a href="#hardwareTab" data-toggle="tab">Hardware</a></li>
+          <li><a href="#softwareTab" data-toggle="tab">Software</a></li>
+        </ul>
+
+		<!-- Hardware and Software tab content -->
+		<div class="tab-content" id="main-content">
+			<div id="hardwareTab" class="tab-pane active">
+				Table/list of hardware with Hardware ID, Hardware Type, Make, Serial No., Personnel ID
+			</div>
+			<div id="softwareTab" class="tab-pane active">
+				Table/List of software with Software ID, Software Type, Licenced, Supported, Personnel ID			
+			</div>			
+		</div>
+	  </div>
+    </div>
+  </div>
+</body>
+</html>
