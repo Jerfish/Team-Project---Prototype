@@ -7,73 +7,74 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-		var ProblemData = []
-		var NextProbID = 124;
-		
-		//DELET THIS (Unnecessary for this)
-		/*function FindCurrentProbID(Row){
-			var row = $(#problemTable > tbody:first tr:nth-child(Row) td:last).val();
-			
-			ProblemData[Row] = 
-		}*/
-		
-		$(document).ready(function(){
-			$("#RequiredInfoForm").submit(function (event){
-			
-				var Status;
-				var TrClass;
-				
-				event.preventDefault();
-				
-				//Pull data from the form
-				var CallerName = $("#RequiredInfoForm #caller").val();
-				var OperatorName = $("#RequiredInfoForm #operator").val();
-				var CallDateTime = $("#RequiredInfoForm #time").val();
-				var Reason = $("#RequiredInfoForm #reason").val();
-				var HardSoft = $("#RequiredInfoForm #hardwaresoftware option:selected").val();
-				var Hardware = $("#RequiredInfoForm #hardware").val();
-				var Software = $("#RequiredInfoForm #software").val();
-				var OS = $("#RequiredInfoForm #os").val();
-				var ProbType = $("#RequiredInfoForm #type").val();
-				
-				var CallerID = $("#ExtraInfoForm #callerId").val();
-				var CallerJob = $("#ExtraInfoForm #callerJob").val();
-				var CallerDept = $("#ExtraInfoForm #callerDept").val();
-				var CallerTelNum = $("#ExtraInfoForm #callerTelNum").val();
-				var HardwareSerial = $("#ExtraInfoForm #hardwareSerial").val();
-				var SoftwareID = $("#ExtraInfoForm #softwareId").val();
-				var SoftwareLicence = $("#ExtraInfoForm #softwareLicence option:selected").val();
-				var SoftwareSupport = $("#ExtraInfoForm #softwareSupport option:selected").val();
-				var SpecialistID = $("#ExtraInfoForm #specialistId").val();
-				var SpecialistName = $("#ExtraInfoForm #specialistName").val();
-				
-				var ProblemDesc = $("#ProblemDescForm #problemDesc").val();
-				
-				//Going to next ProblemID
-				NextProbID ++;
-				
-				//Checking if a specialist has been assigned to the problem so it can be written into data
-				if (SpecialistID !== ""){
-					Status = "Pending";
-					TrClass = "warning";
-				}else{
-					Status = "Unassigned";
-					TrClass = "danger";
-				}
-				
-				//Write Data to array
-				//Update this with the status and extra data that is changed in the edit problem
-				ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc]
-				
-				//Appending data to the table				
-				$("#problemTable > tbody:first").append("<tr class='" + TrClass + "'><td>" + NextProbID + "</td><td>" + CallDateTime + "</td><td>" + CallerName + "</td><td>" + OperatorName + "</td><td>" + HardSoft + "</td><td>" + ProbType + "</td><td>" + SpecialistName + "</td><td>" + "N/A" + "</td><td>" + "N/A" + "</td><td>" + Status + "</td></tr>"); 
-				alert("Got to the end without crashing :)");
-			});
-			$("#TestButton").click(function(event){
-			event.preventDefault();
-				alert(CallerName);
-			});
-		});
+        var ProblemData = []
+        var NextProbID = 124;
+
+        //DELET THIS (Unnecessary for this)
+        /*function FindCurrentProbID(Row){
+        	var row = $(#problemTable > tbody:first tr:nth-child(Row) td:last).val();
+        	
+        	ProblemData[Row] = 
+        }*/
+
+        $(document).ready(function() {
+            $("#RequiredInfoForm").submit(function(event) {
+
+                var Status;
+                var TrClass;
+
+                event.preventDefault();
+
+                //Pull data from the form
+                var CallerName = $("#RequiredInfoForm #caller").val();
+                var OperatorName = $("#RequiredInfoForm #operator").val();
+                var CallDateTime = $("#RequiredInfoForm #time").val();
+                var Reason = $("#RequiredInfoForm #reason").val();
+                var HardSoft = $("#RequiredInfoForm #hardwaresoftware option:selected").val();
+                var Hardware = $("#RequiredInfoForm #hardware").val();
+                var Software = $("#RequiredInfoForm #software").val();
+                var OS = $("#RequiredInfoForm #os").val();
+                var ProbType = $("#RequiredInfoForm #type").val();
+
+                var CallerID = $("#ExtraInfoForm #callerId").val();
+                var CallerJob = $("#ExtraInfoForm #callerJob").val();
+                var CallerDept = $("#ExtraInfoForm #callerDept").val();
+                var CallerTelNum = $("#ExtraInfoForm #callerTelNum").val();
+                var HardwareSerial = $("#ExtraInfoForm #hardwareSerial").val();
+                var SoftwareID = $("#ExtraInfoForm #softwareId").val();
+                var SoftwareLicence = $("#ExtraInfoForm #softwareLicence option:selected").val();
+                var SoftwareSupport = $("#ExtraInfoForm #softwareSupport option:selected").val();
+                var SpecialistID = $("#ExtraInfoForm #specialistId").val();
+                var SpecialistName = $("#ExtraInfoForm #specialistName").val();
+
+                var ProblemDesc = $("#ProblemDescForm #problemDesc").val();
+
+                //Going to next ProblemID
+                NextProbID++;
+
+                //Checking if a specialist has been assigned to the problem so it can be written into data
+                if (SpecialistID !== "") {
+                    Status = "Pending";
+                    TrClass = "warning";
+                } else {
+                    Status = "Unassigned";
+                    TrClass = "danger";
+                }
+
+                //Write Data to array
+                //Update this with the status and extra data that is changed in the edit problem
+                ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc]
+
+                //Appending data to the table				
+                $("#problemTable > tbody:first").append("<tr class='" + TrClass + "'><td>" + NextProbID + "</td><td>" + CallDateTime + "</td><td>" + CallerName + "</td><td>" + OperatorName + "</td><td>" + HardSoft + "</td><td>" + ProbType + "</td><td>" + SpecialistName + "</td><td>" + "N/A" + "</td><td>" + "N/A" + "</td><td>" + Status + "</td></tr>");
+                alert("Got to the end without crashing :)");
+            });
+            $("#TestButton").click(function(event) {
+                event.preventDefault();
+                alert(CallerName);
+            });
+        });
+
         function sortTable(n, i) {
             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById(i);
@@ -130,89 +131,89 @@
         }
 
         function filterProblemTable() {
-  // Declare variables 
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("problemSearch");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("problemTable");
-  tr = table.getElementsByTagName("tr");
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("problemSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("problemTable");
+            tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
-}
-   
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
         function filterSoftwareTable() {
-  // Declare variables 
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("softwareSearch");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("softwareTable");
-  tr = table.getElementsByTagName("tr");
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("softwareSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("softwareTable");
+            tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
-}
-        
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
         function filterHardwareTable() {
-  // Declare variables 
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("hardwareSearch");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("hardwareTable");
-  tr = table.getElementsByTagName("tr");
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("hardwareSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("hardwareTable");
+            tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
-}
-        
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
         function filterSpecialistTable() {
-  // Declare variables 
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("specialistSearch");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("specialistTable");
-  tr = table.getElementsByTagName("tr");
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("specialistSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("specialistTable");
+            tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
-}
-        
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
         function loadProblem(n) {
             document.getElementById("probListTab").className = "unset";
             document.getElementById("viewProbTab").className += " active";
@@ -306,7 +307,7 @@
                 <div class="tab-content" id="main-content">
                     <div id="required" class="tab-pane active">
                         <!--Form with mandatory text boxes for entry -->
-                        <form id="RequiredInfoForm" >
+                        <form id="RequiredInfoForm">
                             <div class="form-group">
                                 <label for="caller">Caller Name</label>
                                 <input type="text" class="form-control" id="caller" placeholder="Joe Bloggs">
@@ -330,7 +331,7 @@
                                 <label for="type">Problem Type</label>
                                 <input type="text" class="form-control" id="type" placeholder="Please select most appropriate">
                                 <div class="spacer"></div>
-                                <input type="submit" id="firstPageSubmit" class="btn btn-default"/>
+                                <input type="submit" id="firstPageSubmit" class="btn btn-default" />
                             </div>
                         </form>
                     </div>
@@ -366,7 +367,7 @@
                                 <label for="specialistName" id="specialistNameLabel">Assigned Specialist Name</label>
                                 <input type="text" class="form-control" id="specialistName" placeholder="John Peters">
                                 <div class="spacer"></div>
-                                
+
                             </div>
                         </form>
                     </div>
@@ -378,7 +379,7 @@
                                 <label for="problemDesc" id="problemDescLabel">Problem Description</label>
                                 <input type="textarea" rows="1000" cols="1000" class="form-control" id="problemDesc" placeholder="Please enter a description of the problem">
                                 <div class="spacer"></div>
-                                
+
                             </div>
                         </form>
                     </div>
@@ -488,54 +489,54 @@
                 <h3>Specialists</h3>
                 <input type="text" id="specialistSearch" onkeyup="filterSpecialistTable()" placeholder="Search for IDs..">
                 <table id="specialistTable" class="table table-hover table-striped">
-<thead>
-<tr>
-<th onclick="sortTable(0,'specialistTable')">Specialist ID</th>
-<th onclick="sortTable(1,'specialistTable')">Name of Specialist</th>
-<th onclick="sortTable(2,'specialistTable')">Specialism</th>
-<th onclick="sortTable(3,'specialistTable')">No. of Current problems</th>
-<th onclick="sortTable(4,'specialistTable')">No. Completed Problems</th>
-<th onclick="sortTable(5,'specialistTable')">Personnel ID</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>303</td>
-<td>Dean Fume</td>
-<td>Printing, Servers</td>
-<td>0</td>
-<td>2</td>
-<td>1243</td>
-</tr>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0,'specialistTable')">Specialist ID</th>
+                            <th onclick="sortTable(1,'specialistTable')">Name of Specialist</th>
+                            <th onclick="sortTable(2,'specialistTable')">Specialism</th>
+                            <th onclick="sortTable(3,'specialistTable')">No. of Current problems</th>
+                            <th onclick="sortTable(4,'specialistTable')">No. Completed Problems</th>
+                            <th onclick="sortTable(5,'specialistTable')">Personnel ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>303</td>
+                            <td>Dean Fume</td>
+                            <td>Printing, Servers</td>
+                            <td>0</td>
+                            <td>2</td>
+                            <td>1243</td>
+                        </tr>
 
-<tr>
-<td>304</td>
-<td>Ray Parker Jr.</td>
-<td>Printing Jam, Adobe Studio</td>
-<td>1</td>
-<td>1</td>
-<td>1203</td>
-</tr>
-    
-<tr>
-<td>305</td>
-<td>Daryl Hall</td>
-<td>Microsoft Office</td>
-<td>0</td>
-<td>0</td>
-<td>1301</td>
-</tr>
+                        <tr>
+                            <td>304</td>
+                            <td>Ray Parker Jr.</td>
+                            <td>Printing Jam, Adobe Studio</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1203</td>
+                        </tr>
 
-<tr>
-<td>306</td>
-<td>Kenny Loggins</td>
-<td>Photoshop, Servers</td>
-<td>1</td>
-<td>1</td>
-<td>1343</td>
-</tr>
-</tbody>
-</table>
+                        <tr>
+                            <td>305</td>
+                            <td>Daryl Hall</td>
+                            <td>Microsoft Office</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1301</td>
+                        </tr>
+
+                        <tr>
+                            <td>306</td>
+                            <td>Kenny Loggins</td>
+                            <td>Photoshop, Servers</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1343</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div id="equipment" class="tab-pane fade">
 
@@ -550,86 +551,86 @@
                     <div id="hardwareTab" class="tab-pane active">
                         <input type="text" id="hardwareSearch" onkeyup="filterHardwareTable()" placeholder="Search for Types..">
                         <table id="hardwareTable" class="table table-hover table-striped">
-<thead>
-<tr>
-<th onclick="sortTable(0,'hardwareTable')">Hardware ID</th>
-<th onclick="sortTable(1,'hardwareTable')">Hardware Type</th>
-<th onclick="sortTable(2,'hardwareTable')">Make</th>
-<th onclick="sortTable(3,'hardwareTable')">Serial No.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0023</td>
-<td>Switch</td>
-<td>Cisco</td>
-<td>01234675</td>
-</tr>
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable(0,'hardwareTable')">Hardware ID</th>
+                                    <th onclick="sortTable(1,'hardwareTable')">Hardware Type</th>
+                                    <th onclick="sortTable(2,'hardwareTable')">Make</th>
+                                    <th onclick="sortTable(3,'hardwareTable')">Serial No.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0023</td>
+                                    <td>Switch</td>
+                                    <td>Cisco</td>
+                                    <td>01234675</td>
+                                </tr>
 
-<tr>
-<td>0024</td>
-<td>Distro</td>
-<td>HP</td>
-<td>113467869</td>
-</tr>
-    
-<tr>
-<td>0025</td>
-<td>Printer</td>
-<td>Industrial Ink Inc.</td>
-<td>09237845673</td>
-</tr>
+                                <tr>
+                                    <td>0024</td>
+                                    <td>Distro</td>
+                                    <td>HP</td>
+                                    <td>113467869</td>
+                                </tr>
 
-<tr>
-<td>0026</td>
-<td>Router</td>
-<td>NETGEAR</td>
-<td>1125364781A</td>
-</tr>
-</tbody>
-</table>
+                                <tr>
+                                    <td>0025</td>
+                                    <td>Printer</td>
+                                    <td>Industrial Ink Inc.</td>
+                                    <td>09237845673</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0026</td>
+                                    <td>Router</td>
+                                    <td>NETGEAR</td>
+                                    <td>1125364781A</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div id="softwareTab" class="tab-pane active">
                         <input type="text" id="softwareSearch" onkeyup="filterSoftwareTable()" placeholder="Search for Types..">
                         <table id="softwareTable" class="table table-hover table-striped">
-<thead>
-<tr>
-<th onclick="sortTable(0,'softwareTable')">Software ID</th>
-<th onclick="sortTable(1,'softwareTable')">Software Type</th>
-<th onclick="sortTable(2,'softwareTable')">Licenced</th>
-<th onclick="sortTable(3,'softwareTable')">Supported</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0043</td>
-<td>Project Management</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable(0,'softwareTable')">Software ID</th>
+                                    <th onclick="sortTable(1,'softwareTable')">Software Type</th>
+                                    <th onclick="sortTable(2,'softwareTable')">Licenced</th>
+                                    <th onclick="sortTable(3,'softwareTable')">Supported</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0043</td>
+                                    <td>Project Management</td>
+                                    <td>Yes</td>
+                                    <td>No</td>
+                                </tr>
 
-<tr>
-<td>0044</td>
-<td>Word Processing</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-    
-<tr>
-<td>0045</td>
-<td>Forum software</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
+                                <tr>
+                                    <td>0044</td>
+                                    <td>Word Processing</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
 
-<tr>
-<td>0046</td>
-<td>Freeware</td>
-<td>No</td>
-<td>No</td>
-</tr>
-</tbody>
-</table>
+                                <tr>
+                                    <td>0045</td>
+                                    <td>Forum software</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0046</td>
+                                    <td>Freeware</td>
+                                    <td>No</td>
+                                    <td>No</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
