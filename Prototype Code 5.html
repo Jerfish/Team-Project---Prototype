@@ -28,11 +28,15 @@
 			17 - SpecialistID
 			18 - SpecialistName
 			19 - ProblemDesc
-			
+            20 - ProblemID
+            21 - date/time Solution
+            22 - Solved By
+			23 - Status
 		*/
         var ProblemData = [
-			["Geri Halliwell", "Alice", "5/11/17 8.55am", "N/A", "Software", "N/A", "Photoshop", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Kenny Loggins", "N/A"],
-			["Sean Murphy", "Alice", "5/11/17 9.23am", "N/A", "Hardware", "N/A", "N/A", "N/A", "Printing", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Dean Fume", "N/A"],
+			["Geri Halliwell", "Alice", "5/11/17 8.55am", "Photoshop keeps crashing/closing on startup", "Software", "N/A", "Photoshop", "Windows", "Photoshop", "1176", "Manager", "Marketing", "556", "N/A", "0047", "Yes", "Yes", "306", "Kenny Loggins", "Photoshop keeps crashing on startup. Machine restart sorted it", 119, '5/11/17 12.14pm', 'Kenny Loggins', 'Solved'],
+			["Sean Murphy", "Alice", "5/11/17 9.23am", "Printed document not printing", "Hardware", "Printer1", "N/A", "N/A", "Printing", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Dean Fume", "N/A", 120, 'Solved'],
+            ["Billy Squier", "Alice", "5/11/17 9.34am", "N/A", "Hardware", "Printer1", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Kenny Loggins", "N/A", 121, 'Pending'],
 			]
         var NextProbID = 124;
 
@@ -105,7 +109,7 @@
 
                 //Write Data to array
                 //Update this with the status, date/time solution and solved by and extra data that is changed in the edit problem
-                ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc]
+                ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc, NextProbID, 'N/A', 'N/A', Status]
 
                 //Appending data to the table				
                 $("#problemTable > tbody:first").append("<tr class='" + TrClass + "'><td>" + NextProbID + "</td><td>" + CallDateTime + "</td><td>" + CallerName + "</td><td>" + OperatorName + "</td><td>" + HardSoft + "</td><td>" + ProbType + "</td><td>" + SpecialistName + "</td><td>" + "N/A" + "</td><td>" + "N/A" + "</td><td>" + Status + "</td></tr>");
@@ -114,10 +118,66 @@
 			
 			$("#problemTable > tbody:first > tr").click(function(){
 				alert("Problem table clicked");
-				//alert($(this).first().val());
-				
+                var probID = $(this).find("td:first").html() - 119;
+                
+                $("#viewProblem").text($("#viewProblem").text() + probID);
+                document.getElementById("viewProblem").className = '';
+                $("#viewProblem").addClass(" in active");
+                $("#problemList").addClass("unset");
+                
+                var overviewText = '<h4>Problem Overview</h4>';
+                overviewText += 'Problem ID: ' + ProblemData[probID][20] + '</br>';
+                overviewText += 'Operator Name: ' + ProblemData[probID][1] + '</br>';
+                overviewText += 'Hardware/Software: ' + ProblemData[probID][4] + '</br>';
+                overviewText += 'Problem Type: ' + ProblemData[probID][8] + '</br>';
+                overviewText += 'Assigned to: ' + ProblemData[probID][18] + '</br>';
+                
+                var callerText = '<h4>Caller Details</h4>';
+                callerText += 'Caller ID: ' + ProblemData[probID][9] + '</br>';
+                callerText += 'Caller Name: ' + ProblemData[probID][0] + '</br>';
+                callerText += 'Caller Job: ' + ProblemData[probID][10] + '</br>';
+                callerText += 'Caller Department: ' + ProblemData[probID][11] + '</br>';
+                callerText += 'Caller Telephone Number: ' + ProblemData[probID][12] + '</br>';
+                
+                var specialistText = '<h4>Specialist Details</h4>';
+                specialistText += 'Specialist ID: ' + ProblemData[probID][17] + '</br>';
+                specialistText += 'Specialist Name: ' + ProblemData[probID][18] + '</br>';
+                
+                var hardSoftText;
+                
+                if(ProblemData[probID][4] == 'Hardware'){
+                    hardSoftText = '<h4>Hardware Details</h4>';
+                    hardSoftText += 'Affected Hardware: ' + ProblemData[probID][5] + '</br>';
+                    hardSoftText += 'Hardware Serial: ' + ProblemData[probID][13] + '</br>';
+                }else if(ProblemData[probID][4] == 'Software'){
+                    hardSoftText = '<h4>Software Details</h4>';
+                    hardSoftText += 'Affected Software: ' + ProblemData[probID][6] + '</br>';
+                    hardSoftText += 'Software ID: ' + ProblemData[probID][14] + '</br>';
+                    //Do we need these three?
+                    hardSoftText += 'OS: ' + ProblemData[probID][7] + '</br>';
+                    hardSoftText += 'Licenced: ' + ProblemData[probID][15] + '</br>';
+                    hardSoftText += 'Supported: ' + ProblemData[probID][16] + '</br>';
+                }
+        
+                var problemDetailsText = '<h4>Problem Details</h4>';
+                problemDetailsText += 'Status: ' + ProblemData[probID][23] + '</br>';
+                problemDetailsText += 'Date/Time of Initial Call: ' + ProblemData[probID][2] + '</br>';
+                if(ProblemData[probID][23]=='Solved'){problemDetailsText += 'Date/Time of Solution: ' + ProblemData[probID][21] + '</br>';problemDetailsText += 'Solved By: ' + ProblemData[probID][22] + '</br>';}
+                problemDetailsText += 'Reason for Call: ' + ProblemData[probID][3] + '</br>';
+                problemDetailsText += 'Problem Description/Log: ' + ProblemData[probID][19] + '</br>';
+                
+                var str = '<div class="divButtons" onclick="loadProblemList()">Return</div>';
+                str += '<h3> Problem ID: ' + (probID+119) + '.</h3>';
+                str += '<div class="container">';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + overviewText + '</div>';
+                str += '<div class="col-sm-3">' + callerText + '</div>';
+                str += '<div class="col-sm-3">' + specialistText + '</div></div>';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + hardSoftText + '</div>';
+                str += '<div class="col-sm-6">' + problemDetailsText + '</div></div></div><div class="divButtons" onclick="editProblem('+probID+')" style="float:right;">Edit</div>'
+                $("#viewProblem").html(str);
 			});
-			
         });
 
         function sortTable(n, i) {
@@ -267,6 +327,11 @@
             document.getElementById("caller1").focus();
             document.activeElement.value = n;
         }
+        
+        function loadProblemList(){
+            document.getElementById('problemList').className = '';
+            document.getElementById('viewProblem').className = 'unset';
+        }
 
         function hideOption() {
             if (document.getElementById("hardwaresoftware").selectedIndex == 1) {
@@ -317,6 +382,19 @@
         .spacer {
             height: 25px;
         }
+        
+        /*Used to make certain things disappear    */
+        .unset {
+            display:none;
+        }
+        
+        /*Used to format the Return and Edit divs to appear as buttons. pls change colour etc.*/
+        .divButtons {
+            background-color: aqua;
+            padding: 12px;
+            width: 20%;
+        }
+        
     </style>
 
 </head>
@@ -327,7 +405,7 @@
         <ul class="nav nav-pills nav-stacked" id="navigation-bar">
             <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
             <li><a data-toggle="pill" href="#add">New Problem</a></li>
-            <li><a data-toggle="pill" href="#problems">Problems List</a></li>
+            <li><a data-toggle="pill" href="#problems" onclick="loadProblemList()">Problems List</a></li>
             <li><a data-toggle="pill" href="#specialists">Specialists List</a></li>
             <li><a data-toggle="pill" href="#equipment">Hardware/Software List</a></li>
         </ul>
@@ -529,6 +607,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div id="viewProblem" class="fade">
+                
+                </div>
             </div>
             <div id="specialists" class="tab-pane fade">
                 <h3>Specialists</h3>
@@ -673,6 +754,12 @@
                                     <td>Freeware</td>
                                     <td>No</td>
                                     <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>0047</td>
+                                    <td>Photoshop</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
                                 </tr>
                             </tbody>
                         </table>
