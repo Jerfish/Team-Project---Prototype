@@ -7,17 +7,56 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        var ProblemData = []
+		/*Data format is
+			0 - CallerName
+			1 - OperatorName
+			2 - CallDateTime
+			3 - Reason
+			4 - HardSoft
+			5 - Hardware
+			6 - Software
+			7 - OS
+			8 - ProbType
+			9 - CallerID
+			10 - CallerJob
+			11 - CallerDept
+			12 - CallerTelNum
+			13 - HardwareSerial
+			14 - SoftwareID
+			15 - SoftwareLicence
+			16 - SoftwareSupport
+			17 - SpecialistID
+			18 - SpecialistName
+			19 - ProblemDesc
+			
+		*/
+        var ProblemData = [
+			["Geri Halliwell", "Alice", "5/11/17 8.55am", "N/A", "Software", "N/A", "Photoshop", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Kenny Loggins", "N/A"],
+			["Sean Murphy", "Alice", "5/11/17 9.23am", "N/A", "Hardware", "N/A", "N/A", "N/A", "Printing", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Dean Fume", "N/A"],
+			]
         var NextProbID = 124;
 
-        //DELET THIS (Unnecessary for this)
-        /*function FindCurrentProbID(Row){
-        	var row = $(#problemTable > tbody:first tr:nth-child(Row) td:last).val();
-        	
-        	ProblemData[Row] = 
-        }*/
-
         $(document).ready(function() {
+		
+			//Why do I keep trying to write this stupid thing - Luke
+			//It's suppossed to read the table into the problem data but I forgot the table doesn't have all the info
+			/*var Row, Tds;
+			var RowData = "";
+			
+			//Update ProblemData with currently hardcoded table
+			var NumRows = $("#problemTable > tbody:first").find("tr").length;
+			alert(NumRows);
+			for(var i = 0; i < NumRows; i++){
+				Row = $("#problemTable > tbody:first tr:nth-child(" + (i + 1) + ")");
+				Tds = Row.find("td");
+				alert(Tds[1]);
+				$.each(Tds, function(){
+					alert($(this).text());
+				});
+			}*/
+			
+			//Function for submitting the data from the new problem form
+			
             $("#RequiredInfoForm").submit(function(event) {
 
                 var Status;
@@ -25,6 +64,9 @@
 
                 event.preventDefault();
 
+				
+				
+				
                 //Pull data from the form
                 var CallerName = $("#RequiredInfoForm #caller").val();
                 var OperatorName = $("#RequiredInfoForm #operator").val();
@@ -62,17 +104,20 @@
                 }
 
                 //Write Data to array
-                //Update this with the status and extra data that is changed in the edit problem
+                //Update this with the status, date/time solution and solved by and extra data that is changed in the edit problem
                 ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc]
 
                 //Appending data to the table				
                 $("#problemTable > tbody:first").append("<tr class='" + TrClass + "'><td>" + NextProbID + "</td><td>" + CallDateTime + "</td><td>" + CallerName + "</td><td>" + OperatorName + "</td><td>" + HardSoft + "</td><td>" + ProbType + "</td><td>" + SpecialistName + "</td><td>" + "N/A" + "</td><td>" + "N/A" + "</td><td>" + Status + "</td></tr>");
                 alert("Got to the end without crashing :)");
             });
-            $("#TestButton").click(function(event) {
-                event.preventDefault();
-                alert(CallerName);
-            });
+			
+			$("#problemTable > tbody:first > tr").click(function(){
+				alert("Problem table clicked");
+				//alert($(this).first().val());
+				
+			});
+			
         });
 
         function sortTable(n, i) {
