@@ -186,6 +186,66 @@
                 $("#problemList").addClass("unset");
                 $("#viewProblem").addClass("unset");
             
+            var overviewForm = '<h4>Problem Overview</h4>';
+            overviewForm += '<label for="editOperator">Helpdesk Operator Name</label><input type="text" class="form-control" id="editOperator" value="'+ProblemData[probID][1]+'">';
+            //TODO this needs to be populated, cba to do it now
+            if(ProblemData[probID][4]=='Software'){
+                overviewForm += '<label for="edithardwaresoftware">Hardware/Software</label><select class="form-control" id="edithardwaresoftware" onchange="hideOption()"><option>Hardware</option><option selected="selected">Software</option></select>'
+            }else{
+                overviewForm += '<label for="edithardwaresoftware">Hardware/Software</label><select class="form-control" id="edithardwaresoftware" onchange="hideOption()"><option>Hardware</option><option>Software</option></select>'
+            }
+            overviewForm += '<label for="editType">Problem Type</label><input type="text" class="form-control" id="editType" value="'+ProblemData[probID][8]+'">';
+            overviewForm += '<label for="editSpecialistName" id="specialistNameLabel">Assigned Specialist Name</label><input type="text" class="form-control" id="editSpecialistName" value="'+ProblemData[probID][18]+'">';
+            
+             
+            
+            var callerForm = '<h4>Caller Details</h4>';
+            callerForm += '<label for="editCallerId">Caller ID</label><input type="text" class="form-control" id="editCallerId" value="' + ProblemData[probID][9] + '">';
+            callerForm += '<label for="editCaller">Caller Name:</label><input type="text" class="form-control" id="editCaller" value="' + ProblemData[probID][0] + '">';
+            callerForm += '<label for="editCallerJob">Caller Job</label><input type="text" class="form-control" id="editCallerJob" value="' + ProblemData[probID][10] + '">';
+            callerForm += '<label for="editCallerDept">Caller Department</label><input type="text" class="form-control" id="editCallerDept" value="' + ProblemData[probID][11] + '">';
+            callerForm += '<label for="editCallerTelNum">Caller Telephone Number</label><input type="text" class="form-control" id="editCallerTelNum" value="' + ProblemData[probID][12] + '">'
+            
+            var specialistForm = '<h4>Specialist Details</h4>';
+            specialistForm += '<label for="editSpecialistId" id="editSpecialistIdLabel">Assigned Specialist ID</label><input type="text" class="form-control" id="editSpecialistId" value="' + ProblemData[probID][17] + '">';
+            specialistForm += '<label for="editSpecialistName" id="specialistNameLabel">Assigned Specialist Name</label><input type="text" class="form-control" id="editSpecialistName" value="'+ProblemData[probID][18]+'">';
+            
+            var hardSoftForm; 
+            if(ProblemData[probID][4] == 'Hardware'){
+                    hardSoftForm = '<h4>Hardware Details</h4>';
+                    
+                }else if(ProblemData[probID][4] == 'Software'){
+                    hardSoftForm = '<h4>Software Details</h4>';
+                    hardSoftForm += '<label for="editSoftware" id="editSoftwareLabel">Affected Software</label><input type="text" class="form-control" id="editSoftware" value="'+ProblemData[probID][6]+'">';
+                    hardSoftForm += '<label for="editSoftwareId" id="editSoftwareIdLabel">Software ID</label><input type="text" class="form-control" id="editSoftwareId" value="'+ProblemData[probID][14]+'">';
+                    hardSoftForm += '<label for="editOs">Operating System</label><input type="text" class="form-control" id="editOs" value="'+ProblemData[probID][7]+'">';
+                    if(ProblemData[probID][15]=='No'){
+                        hardSoftForm += '<label for="softwareLicence" id="softwareLicenceLabel">Software Licenced?</label><select class="form-control" id="softwareLicence" placeholder="Select an option"><option>Yes</option><option selected="selected">No</option></select>';
+                    }  else {
+                        hardSoftForm += '<label for="softwareLicence" id="softwareLicenceLabel">Software Licenced?</label><select class="form-control" id="softwareLicence" placeholder="Select an option"><option>Yes</option><option>No</option></select>';
+                    }
+                    if(ProblemData[probID][16]=='No'){
+                        hardSoftForm += '<label for="softwareSupport" id="softwareSupportLabel">Software Supported?</label><select class="form-control" id="softwareSupport" placeholder="Select an option"><option>Yes</option><option selected="selected">No</option></select>';
+                    }  else {
+                        hardSoftForm += '<label for="softwareSupport" id="softwareSupportLabel">Software Supported?</label><select class="form-control" id="softwareSupport" placeholder="Select an option"><option>Yes</option><option>No</option></select>';
+                    }
+                }
+            
+            var problemDetailsForm = '<h4>Problem Details</h4>';
+            if(ProblemData[probID][23]=='Solved'){
+                problemDetailsForm += '<div style="background-color:chartreuse"><label for="editStatus" id="statusLabel">Status:</label><select class="form-control" id="status" placeholder="Select an option"><option>Unassigned</option><option>Pending</option><option selected="selected">Solved</option></select></div>';
+            }  else if(ProblemData[probID][23]=='Pending'){
+                hardSoftForm += '<div style="background-color:darkorange"><label for="editStatus" id="statusLabel">Status:</label><select class="form-control" id="status" placeholder="Select an option"><option>Unassigned</option><option selected="selected">Pending</option><option>Solved</option></select></div>';
+            } else {
+                hardSoftForm += '<div style="background-color:crimson"><label for="editStatus" id="statusLabel">Status:</label><select class="form-control" id="status" placeholder="Select an option"> <option>Unassigned</option><option>Pending</option><option>Solved</option></select></div>';
+            }
+            problemDetailsForm += '<label for="time">Time/Date of Call</label><input type="text" class="form-control" id="time" value="'+ProblemData[probID][2]+'">';
+            problemDetailsForm += '<label for="solutionTime">Time/Date of Solution</label><input type="text" class="form-control" id="solutionTime" value="'+ProblemData[probID][21]+'">';
+            problemDetailsForm += '<label for="solver">Solved By</label><input type="text" class="form-control" id="solver" value="'+ProblemData[probID][22]+'">';
+            problemDetailsForm += '<label for="reason">Reason for Call</label><input type="text" class="form-control" id="reason" value="'+ProblemData[probID][3]+'">';
+            problemDetailsForm += '<label for="editProblemDesc" id="editProblemDescLabel">Problem Description/Log</label><input type="textarea" rows="5" cols="1000" class="form-control" id="editProblemDesc" value="'+ProblemData[probID][19]+'">';
+            
+            
             var str = '<div class="divButtons" onclick="loadProblemList()">Return</div>';
                 str += '<h3> Problem ID: ' + (probID+119) + '.</h3>';
                 str += '<div class="container">';
@@ -195,8 +255,8 @@
                 str += '<div class="col-sm-3">' + specialistForm + '</div></div>';
                 str += '<div class="row">';
                 str += '<div class="col-sm-6">' + hardSoftForm + '</div>';
-                str += '<div class="col-sm-6">' + problemDetailsForm + '</div></div></div>';
-                $("#viewProblem").html(str);
+                str += '<div class="col-sm-6">' + problemDetailsForm + '</div></div><input type="submit" id="editProblemSubmit" class="btn btn-default" /></div>';
+                $("#editProblem").html(str);
         }
         
         
@@ -470,7 +530,9 @@
                                 <input type="text" class="form-control" id="hardware" placeholder="Kodak Printer">
                                 <label for="software" id="softwareLabel" style="display:none">Software Affected</label>
                                 <input type="text" class="form-control" id="software" placeholder="Photoshop" style="display:none">
-                                <label for="reason">Operating System</label>
+                                <label for="reason">Reason for Call</label>
+                                <input type="text" class="form-control" id="reason" placeholder="eg. Software keeps crashing">
+                                <label for="os">Operating System</label>
                                 <input type="text" class="form-control" id="os" placeholder="Windows/Mac OS/Linux">
                                 <label for="type">Problem Type</label>
                                 <input type="text" class="form-control" id="type" placeholder="Please select most appropriate">
@@ -521,7 +583,7 @@
                         <form id="ProblemDescForm">
                             <div class="form-group">
                                 <label for="problemDesc" id="problemDescLabel">Problem Description</label>
-                                <input type="textarea" rows="1000" cols="1000" class="form-control" id="problemDesc" placeholder="Please enter a description of the problem">
+                                <input type="textarea" rows="5"  class="form-control" id="problemDesc" placeholder="Please enter a description of the problem">
                                 <div class="spacer"></div>
 
                             </div>
@@ -740,7 +802,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="softwareTab" class="tab-pane active">
+                    <div id="softwareTab" class="tab-pane">
                         <input type="text" id="softwareSearch" onkeyup="filterSoftwareTable()" placeholder="Search for Types..">
                         <table id="softwareTable" class="table table-hover table-striped">
                             <thead>
