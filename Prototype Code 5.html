@@ -120,10 +120,10 @@
 				alert("Problem table clicked");
                 var probID = $(this).find("td:first").html() - 119;
                 
-                $("#viewProblem").text($("#viewProblem").text() + probID);
                 document.getElementById("viewProblem").className = '';
                 $("#viewProblem").addClass(" in active");
                 $("#problemList").addClass("unset");
+                $("#editProblem").addClass("unset");
                 
                 var overviewText = '<h4>Problem Overview</h4>';
                 overviewText += 'Problem ID: ' + ProblemData[probID][20] + '</br>';
@@ -180,6 +180,26 @@
 			});
         });
 
+        function editProblem(probID){
+            document.getElementById("editProblem").className = '';
+                $("#editProblem").addClass(" in active");
+                $("#problemList").addClass("unset");
+                $("#viewProblem").addClass("unset");
+            
+            var str = '<div class="divButtons" onclick="loadProblemList()">Return</div>';
+                str += '<h3> Problem ID: ' + (probID+119) + '.</h3>';
+                str += '<div class="container">';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + overviewForm + '</div>';
+                str += '<div class="col-sm-3">' + callerForm + '</div>';
+                str += '<div class="col-sm-3">' + specialistForm + '</div></div>';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + hardSoftForm + '</div>';
+                str += '<div class="col-sm-6">' + problemDetailsForm + '</div></div></div>';
+                $("#viewProblem").html(str);
+        }
+        
+        
         function sortTable(n, i) {
             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById(i);
@@ -245,7 +265,7 @@
 
             // Loop through all table rows, and hide those who don't match the search query
             for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
+                td = tr[i].getElementsByTagName("td")[5];
                 if (td) {
                     if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";
@@ -331,6 +351,7 @@
         function loadProblemList(){
             document.getElementById('problemList').className = '';
             document.getElementById('viewProblem').className = 'unset';
+            document.getElementById('editProblem').className = 'unset';
         }
 
         function hideOption() {
@@ -514,7 +535,7 @@
                 <div id="problemList" class="">
                     <!--Form with mandatory text boxes for entry -->
                     <h3>Problems List</h3>
-                    <input type="text" id="problemSearch" onkeyup="filterProblemTable()" placeholder="Search for IDs..">
+                    <input type="text" id="problemSearch" onkeyup="filterProblemTable()" placeholder="Search for Problem Types..">
                     <table id="problemTable" class="table table-hover">
                         <thead>
                             <tr>
@@ -531,7 +552,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr onclick="alert('Sean Murphy');" class="success">
+                            <tr class="success">
                                 <td>119</td>
                                 <td>5/11/17 8.55am</td>
                                 <td>Geri Halliwell</td>
@@ -543,7 +564,7 @@
                                 <td>Kenny Loggins</td>
                                 <td>Solved</td>
                             </tr>
-                            <tr onclick="alert('Sean Murphy');" class="success">
+                            <tr class="success">
                                 <td class="problemID" id="123">120</td>
                                 <td>5/11/17 9.23am</td>
                                 <td>Sean Murphy</td>
@@ -555,7 +576,7 @@
                                 <td>Dean Fume</td>
                                 <td>Solved</td>
                             </tr>
-                            <tr onclick="alert('Billy Squier')" class="warning">
+                            <tr class="warning">
                                 <td class="problemID" id="124">121</td>
                                 <td>5/11/17 9.34am</td>
                                 <td>Billy Squier</td>
@@ -567,7 +588,7 @@
                                 <td>N/A</td>
                                 <td>Pending</td>
                             </tr>
-                            <tr onclick="alert('Sean Murphy');" class="success">
+                            <tr class="success">
                                 <td class="problemID" id="125">122</td>
                                 <td>5/11/17 9.57am</td>
                                 <td>Sean Murphy</td>
@@ -580,7 +601,7 @@
                                 <td>Solved</td>
                             </tr>
 
-                            <tr onclick="alert('Billy Squier')" class="warning">
+                            <tr class="warning">
                                 <td class="problemID" id="124">123</td>
                                 <td>5/11/17 10.03am</td>
                                 <td>Billy Squier</td>
@@ -592,7 +613,7 @@
                                 <td>N/A</td>
                                 <td>Pending</td>
                             </tr>
-                            <tr onclick="alert('Sean Murphy');" class="danger">
+                            <tr class="danger">
                                 <td>124</td>
                                 <td>5/11/17 11.47am</td>
                                 <td>Billy Joel</td>
@@ -609,6 +630,9 @@
                 </div>
                 <div id="viewProblem" class="fade">
                 
+                </div>
+                <div id="editProblem" class="fade">
+                oh no
                 </div>
             </div>
             <div id="specialists" class="tab-pane fade">
