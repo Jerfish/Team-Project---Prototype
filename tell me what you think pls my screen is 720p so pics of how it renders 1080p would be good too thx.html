@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Helpdesk Prototype Team 11</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+		/*Data format is
+			0 - CallerName
+			1 - OperatorName
+			2 - CallDateTime
+			3 - Reason
+			4 - HardSoft
+			5 - Hardware
+			6 - Software
+			7 - OS
+			8 - ProbType
+			9 - CallerID
+			10 - CallerJob
+			11 - CallerDept
+			12 - CallerTelNum
+			13 - HardwareSerial
+			14 - SoftwareID
+			15 - SoftwareLicence
+			16 - SoftwareSupport
+			17 - SpecialistID
+			18 - SpecialistName
+			19 - ProblemDesc
+            20 - ProblemID
+            21 - date/time Solution
+            22 - Solved By
+			23 - Status
+		*/
+        var ProblemData = [
+			["Geri Halliwell", "Alice", "5/11/17 8.55am", "Photoshop keeps crashing/closing on startup", "Software", "N/A", "Photoshop", "Windows", "Photoshop", "1176", "Manager", "Marketing", "556", "N/A", "0047", "Yes", "Yes", "306", "Kenny Loggins", "Photoshop keeps crashing on startup. Machine restart sorted it", 119, '5/11/17 12.14pm', 'Kenny Loggins', 'Solved'],
+			["Sean Murphy", "Alice", "5/11/17 9.23am", "Printed document not printing", "Hardware", "Printer1", "N/A", "N/A", "Printing", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Dean Fume", "N/A", 120, 'Solved'],
+            ["Billy Squier", "Alice", "5/11/17 9.34am", "N/A", "Hardware", "Printer1", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A", "Kenny Loggins", "N/A", 121, 'Pending'],
+			]
+        var NextProbID = 124;
+        $(document).ready(function() {
+		
+			//Why do I keep trying to write this stupid thing - Luke
+			//It's suppossed to read the table into the problem data but I forgot the table doesn't have all the info
+			/*var Row, Tds;
+			var RowData = "";
+			
+			//Update ProblemData with currently hardcoded table
+			var NumRows = $("#problemTable > tbody:first").find("tr").length;
+			alert(NumRows);
+			for(var i = 0; i < NumRows; i++){
+				Row = $("#problemTable > tbody:first tr:nth-child(" + (i + 1) + ")");
+				Tds = Row.find("td");
+				alert(Tds[1]);
+				$.each(Tds, function(){
+					alert($(this).text());
+				});
+			}*/
+			
+			//Function for submitting the data from the new problem form
+			
+            $("#RequiredInfoForm").submit(function(event) {
+                var Status;
+                var TrClass;
+                event.preventDefault();
+				
+				
+				
+                //Pull data from the form
+                var CallerName = $("#RequiredInfoForm #caller").val();
+                var OperatorName = $("#RequiredInfoForm #operator").val();
+                var CallDateTime = $("#RequiredInfoForm #time").val();
+                var Reason = $("#RequiredInfoForm #reason").val();
+                var HardSoft = $("#RequiredInfoForm #hardwaresoftware option:selected").val();
+                var Hardware = $("#RequiredInfoForm #hardware").val();
+                var Software = $("#RequiredInfoForm #software").val();
+                var OS = $("#RequiredInfoForm #os").val();
+                var ProbType = $("#RequiredInfoForm #type").val();
+                var CallerID = $("#ExtraInfoForm #callerId").val();
+                var CallerJob = $("#ExtraInfoForm #callerJob").val();
+                var CallerDept = $("#ExtraInfoForm #callerDept").val();
+                var CallerTelNum = $("#ExtraInfoForm #callerTelNum").val();
+                var HardwareSerial = $("#ExtraInfoForm #hardwareSerial").val();
+                var SoftwareID = $("#ExtraInfoForm #softwareId").val();
+                var SoftwareLicence = $("#ExtraInfoForm #softwareLicence option:selected").val();
+                var SoftwareSupport = $("#ExtraInfoForm #softwareSupport option:selected").val();
+                var SpecialistID = $("#ExtraInfoForm #specialistId").val();
+                var SpecialistName = $("#ExtraInfoForm #specialistName").val();
+                var ProblemDesc = $("#ProblemDescForm #problemDesc").val();
+                //Going to next ProblemID
+                NextProbID++;
+                //Checking if a specialist has been assigned to the problem so it can be written into data
+                if (SpecialistID !== "") {
+                    Status = "Pending";
+                    TrClass = "warning";
+                } else {
+                    Status = "Unassigned";
+                    TrClass = "danger";
+                }
+                //Write Data to array
+                //Update this with the status, date/time solution and solved by and extra data that is changed in the edit problem
+                ProblemData[ProblemData.length] = [CallerName, OperatorName, CallDateTime, Reason, HardSoft, Hardware, Software, OS, ProbType, CallerID, CallerJob, CallerDept, CallerTelNum, HardwareSerial, SoftwareID, SoftwareLicence, SoftwareSupport, SpecialistID, SpecialistName, ProblemDesc, NextProbID, 'N/A', 'N/A', Status]
+                //Appending data to the table				
+                $("#problemTable > tbody:first").append("<tr class='" + TrClass + "'><td>" + NextProbID + "</td><td>" + CallDateTime + "</td><td>" + CallerName + "</td><td>" + OperatorName + "</td><td>" + HardSoft + "</td><td>" + ProbType + "</td><td>" + SpecialistName + "</td><td>" + "N/A" + "</td><td>" + "N/A" + "</td><td>" + Status + "</td></tr>");
+                alert("Got to the end without crashing :)");
+            });
+			
+			$("#problemTable > tbody:first > tr").click(function(){
+				alert("Problem table clicked");
+                var probID = $(this).find("td:first").html() - 119;
+                
+                document.getElementById("viewProblem").className = '';
+                $("#viewProblem").addClass(" in active");
+                $("#problemList").addClass("unset");
+                $("#editProblem").addClass("unset");
+                
+                var overviewText = '<h4>Problem Overview</h4>';
+                overviewText += 'Problem ID: ' + ProblemData[probID][20] + '</br>';
+                overviewText += 'Operator Name: ' + ProblemData[probID][1] + '</br>';
+                overviewText += 'Hardware/Software: ' + ProblemData[probID][4] + '</br>';
+                overviewText += 'Problem Type: ' + ProblemData[probID][8] + '</br>';
+                overviewText += 'Assigned to: ' + ProblemData[probID][18] + '</br>';
+                
+                var callerText = '<h4>Caller Details</h4>';
+                callerText += 'Caller ID: ' + ProblemData[probID][9] + '</br>';
+                callerText += 'Caller Name: ' + ProblemData[probID][0] + '</br>';
+                callerText += 'Caller Job: ' + ProblemData[probID][10] + '</br>';
+                callerText += 'Caller Department: ' + ProblemData[probID][11] + '</br>';
+                callerText += 'Caller Telephone Number: ' + ProblemData[probID][12] + '</br>';
+                
+                var specialistText = '<h4>Specialist Details</h4>';
+                specialistText += 'Specialist ID: ' + ProblemData[probID][17] + '</br>';
+                specialistText += 'Specialist Name: ' + ProblemData[probID][18] + '</br>';
+                
+                var hardSoftText;
+                
+                if(ProblemData[probID][4] == 'Hardware'){
+                    hardSoftText = '<h4>Hardware Details</h4>';
+                    hardSoftText += 'Affected Hardware: ' + ProblemData[probID][5] + '</br>';
+                    hardSoftText += 'Hardware Serial: ' + ProblemData[probID][13] + '</br>';
+                }else if(ProblemData[probID][4] == 'Software'){
+                    hardSoftText = '<h4>Software Details</h4>';
+                    hardSoftText += 'Affected Software: ' + ProblemData[probID][6] + '</br>';
+                    hardSoftText += 'Software ID: ' + ProblemData[probID][14] + '</br>';
+                    //Do we need these three?
+                    hardSoftText += 'OS: ' + ProblemData[probID][7] + '</br>';
+                    hardSoftText += 'Licenced: ' + ProblemData[probID][15] + '</br>';
+                    hardSoftText += 'Supported: ' + ProblemData[probID][16] + '</br>';
+                }
+        
+                var problemDetailsText = '<h4>Problem Details</h4>';
+                problemDetailsText += 'Status: ' + ProblemData[probID][23] + '</br>';
+                problemDetailsText += 'Date/Time of Initial Call: ' + ProblemData[probID][2] + '</br>';
+                if(ProblemData[probID][23]=='Solved'){problemDetailsText += 'Date/Time of Solution: ' + ProblemData[probID][21] + '</br>';problemDetailsText += 'Solved By: ' + ProblemData[probID][22] + '</br>';}
+                problemDetailsText += 'Reason for Call: ' + ProblemData[probID][3] + '</br>';
+                problemDetailsText += 'Problem Description/Log: ' + ProblemData[probID][19] + '</br>';
+                
+                var str = '<div class="divButtons" onclick="loadProblemList()" style="float: left;"">Return</div><div class="divButtons" onclick="editProblem('+probID+')" style="float: right; text-align: right;  ">Edit</div>';
+                str += '<br><br><h3> Problem ID: ' + (probID+119) + '</h3>';
+                str += '<div class="main-content">';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + overviewText + '</div>';
+                str += '<div class="col-sm-3">' + callerText + '</div>';
+                str += '<div class="col-sm-3">' + specialistText + '</div></div>';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + hardSoftText + '</div>';
+                str += '<div class="col-sm-6">' + problemDetailsText + '</div></div></div>'
+                $("#viewProblem").html(str);
+			});
+        });
+        function editProblem(probID){
+            document.getElementById("editProblem").className = '';
+                $("#editProblem").addClass(" in active");
+                $("#problemList").addClass("unset");
+                $("#viewProblem").addClass("unset");
+            
+            var overviewForm = '<h4>Problem Overview</h4>';
+            overviewForm += '<label for="editOperator">Helpdesk Operator Name</label><input type="text" class="form-control" id="editOperator" value="'+ProblemData[probID][1]+'">';
+            //TODO this needs to be populated, cba to do it now
+            if(ProblemData[probID][4]=='Software'){
+                overviewForm += '<label for="edithardwaresoftware">Hardware/Software</label><select class="form-control" id="edithardwaresoftware" onchange="hideOption()"><option>Hardware</option><option selected="selected">Software</option></select>'
+            }else{
+                overviewForm += '<label for="edithardwaresoftware">Hardware/Software</label><select class="form-control" id="edithardwaresoftware" onchange="hideOption()"><option>Hardware</option><option>Software</option></select>'
+            }
+            overviewForm += '<label for="editType">Problem Type</label><input type="text" class="form-control" id="editType" value="'+ProblemData[probID][8]+'">';
+            overviewForm += '<label for="editSpecialistName" id="specialistNameLabel">Assigned Specialist Name</label><input type="text" class="form-control" id="editSpecialistName" value="'+ProblemData[probID][18]+'">';
+            
+             
+            
+            var callerForm = '<h4>Caller Details</h4>';
+            callerForm += '<label for="editCallerId">Caller ID</label><input type="text" class="form-control" id="editCallerId" value="' + ProblemData[probID][9] + '">';
+            callerForm += '<label for="editCaller">Caller Name:</label><input type="text" class="form-control" id="editCaller" value="' + ProblemData[probID][0] + '">';
+            callerForm += '<label for="editCallerJob">Caller Job</label><input type="text" class="form-control" id="editCallerJob" value="' + ProblemData[probID][10] + '">';
+            callerForm += '<label for="editCallerDept">Caller Department</label><input type="text" class="form-control" id="editCallerDept" value="' + ProblemData[probID][11] + '">';
+            callerForm += '<label for="editCallerTelNum">Caller Telephone Number</label><input type="text" class="form-control" id="editCallerTelNum" value="' + ProblemData[probID][12] + '">'
+            
+            var specialistForm = '<h4>Specialist Details</h4>';
+            specialistForm += '<label for="editSpecialistId" id="editSpecialistIdLabel">Assigned Specialist ID</label><input type="text" class="form-control" id="editSpecialistId" value="' + ProblemData[probID][17] + '">';
+            specialistForm += '<label for="editSpecialistName" id="specialistNameLabel">Assigned Specialist Name</label><input type="text" class="form-control" id="editSpecialistName" value="'+ProblemData[probID][18]+'">';
+            
+            var hardSoftForm; 
+            if(ProblemData[probID][4] == 'Hardware'){
+                    hardSoftForm = '<h4>Hardware Details</h4>';
+                    
+                }else if(ProblemData[probID][4] == 'Software'){
+                    hardSoftForm = '<h4>Software Details</h4>';
+                    hardSoftForm += '<label for="editSoftware" id="editSoftwareLabel">Affected Software</label><input type="text" class="form-control" id="editSoftware" value="'+ProblemData[probID][6]+'">';
+                    hardSoftForm += '<label for="editSoftwareId" id="editSoftwareIdLabel">Software ID</label><input type="text" class="form-control" id="editSoftwareId" value="'+ProblemData[probID][14]+'">';
+                    hardSoftForm += '<label for="editOs">Operating System</label><input type="text" class="form-control" id="editOs" value="'+ProblemData[probID][7]+'">';
+                    if(ProblemData[probID][15]=='No'){
+                        hardSoftForm += '<label for="softwareLicence" id="softwareLicenceLabel">Software Licenced?</label><select class="form-control" id="softwareLicence" placeholder="Select an option"><option>Yes</option><option selected="selected">No</option></select>';
+                    }  else {
+                        hardSoftForm += '<label for="softwareLicence" id="softwareLicenceLabel">Software Licenced?</label><select class="form-control" id="softwareLicence" placeholder="Select an option"><option>Yes</option><option>No</option></select>';
+                    }
+                    if(ProblemData[probID][16]=='No'){
+                        hardSoftForm += '<label for="softwareSupport" id="softwareSupportLabel">Software Supported?</label><select class="form-control" id="softwareSupport" placeholder="Select an option"><option>Yes</option><option selected="selected">No</option></select>';
+                    }  else {
+                        hardSoftForm += '<label for="softwareSupport" id="softwareSupportLabel">Software Supported?</label><select class="form-control" id="softwareSupport" placeholder="Select an option"><option>Yes</option><option>No</option></select>';
+                    }
+                }
+            
+            var problemDetailsForm = '<h4>Problem Details</h4>';
+            if(ProblemData[probID][23]=='Solved'){
+                problemDetailsForm += '<div style="background-color:chartreuse"><label for="editStatus" id="statusLabel">Status:</label><select class="form-control" id="status" placeholder="Select an option"><option>Unassigned</option><option>Pending</option><option selected="selected">Solved</option></select></div>';
+            }  else if(ProblemData[probID][23]=='Pending'){
+                hardSoftForm += '<div style="background-color:darkorange"><label for="editStatus" id="statusLabel">Status:</label><select class="form-control" id="status" placeholder="Select an option"><option>Unassigned</option><option selected="selected">Pending</option><option>Solved</option></select></div>';
+            } else {
+                hardSoftForm += '<div style="background-color:crimson"><label for="editStatus" id="statusLabel">Status:</label><select class="form-control" id="status" placeholder="Select an option"> <option>Unassigned</option><option>Pending</option><option>Solved</option></select></div>';
+            }
+            problemDetailsForm += '<label for="time">Time/Date of Call</label><input type="text" class="form-control" id="time" value="'+ProblemData[probID][2]+'">';
+            problemDetailsForm += '<label for="solutionTime">Time/Date of Solution</label><input type="text" class="form-control" id="solutionTime" value="'+ProblemData[probID][21]+'">';
+            problemDetailsForm += '<label for="solver">Solved By</label><input type="text" class="form-control" id="solver" value="'+ProblemData[probID][22]+'">';
+            problemDetailsForm += '<label for="reason">Reason for Call</label><input type="text" class="form-control" id="reason" value="'+ProblemData[probID][3]+'">';
+            problemDetailsForm += '<label for="editProblemDesc" id="editProblemDescLabel">Problem Description/Log</label><input type="textarea" rows="5" cols="1000" class="form-control" id="editProblemDesc" value="'+ProblemData[probID][19]+'">';
+            
+            
+            var str = '<div class="divButtons" onclick="loadProblemList()">Return</div>';
+                str += '<h3> Problem ID: ' + (probID+119) + '.</h3>';
+                str += '<div class="viewProblem">';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + overviewForm + '</div>';
+                str += '<div class="col-sm-3">' + callerForm + '</div>';
+                str += '<div class="col-sm-3">' + specialistForm + '</div></div>';
+                str += '<div class="row">';
+                str += '<div class="col-sm-6">' + hardSoftForm + '</div>';
+                str += '<div class="col-sm-6">' + problemDetailsForm + '</div></div><input type="submit" id="editProblemSubmit" class="divButtons" /></div>';
+                $("#editProblem").html(str);
+        }
+        
+        
+        function sortTable(n, i) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(i);
+            switching = true;
+            //Set the sorting direction to ascending:
+            dir = "asc";
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.getElementsByTagName("tr");
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = rows[i].getElementsByTagName("td")[n];
+                    y = rows[i + 1].getElementsByTagName("td")[n];
+                    /*check if the two rows should switch place,
+                    based on the direction, asc or desc:*/
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            //if so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    //Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /*If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again.*/
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+        function filterProblemTable() {
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("problemSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("problemTable");
+            tr = table.getElementsByTagName("tr");
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[5];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function filterSoftwareTable() {
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("softwareSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("softwareTable");
+            tr = table.getElementsByTagName("tr");
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function filterHardwareTable() {
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("hardwareSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("hardwareTable");
+            tr = table.getElementsByTagName("tr");
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function filterSpecialistTable() {
+            // Declare variables 
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("specialistSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("specialistTable");
+            tr = table.getElementsByTagName("tr");
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        function loadProblem(n) {
+            document.getElementById("probListTab").className = "unset";
+            document.getElementById("viewProbTab").className += " active";
+            document.getElementById("problemList").className = "tab-pane";
+            document.getElementById("loadProblem").className = "tab-pane active";
+            document.getElementById("caller1").focus();
+            document.activeElement.value = n;
+        }
+        
+        function loadProblemList(){
+            document.getElementById('problemList').className = '';
+            document.getElementById('viewProblem').className = 'unset';
+            document.getElementById('editProblem').className = 'unset';
+        }
+        function hideOption() {
+            if (document.getElementById("hardwaresoftware").selectedIndex == 1) {
+                document.getElementById("softwareLicence").style.display = "unset";
+                document.getElementById("softwareLicenceLabel").style.display = "unset";
+                document.getElementById("softwareSupport").style.display = "unset";
+                document.getElementById("softwareSupportLabel").style.display = "unset";
+                document.getElementById("softwareLabel").style.display = "unset";
+                document.getElementById("software").style.display = "unset";
+                document.getElementById("softwareIdLabel").style.display = "unset";
+                document.getElementById("softwareId").style.display = "unset";
+                document.getElementById("hardware").style.display = "none";
+                document.getElementById("hardwareLabel").style.display = "none";
+                document.getElementById("hardwareSerial").style.display = "none";
+                document.getElementById("hardwareSerialLabel").style.display = "none";
+            }
+            if (document.getElementById("hardwaresoftware").selectedIndex == 0) {
+                document.getElementById("hardwareSerial").style.display = "unset";
+                document.getElementById("hardwareSerialLabel").style.display = "unset";
+                document.getElementById("hardwareLabel").style.display = "unset";
+                document.getElementById("hardware").style.display = "unset";
+                document.getElementById("software").style.display = "none";
+                document.getElementById("softwareLabel").style.display = "none";
+                document.getElementById("softwareId").style.display = "none";
+                document.getElementById("softwareIdLabel").style.display = "none";
+                document.getElementById("softwareLicence").style.display = "none";
+                document.getElementById("softwareLicenceLabel").style.display = "none";
+                document.getElementById("softwareSupport").style.display = "none";
+                document.getElementById("softwareSupportLabel").style.display = "none";
+            }
+        }
+    </script>
+    <style>
+        .container-fluid {
+            display: flex;
+            padding: 10px;
+            position: absolute;    
+            margin:auto;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+        }
+        .viewProblem{
+            padding: 10px;   
+        }
+        .tab-pane active{
+            padding: 10px;
+        }
+        .nav.nav-pill.nav-stacked {
+            width: 15%;
+        }
+        
+        #main-content {
+            width: 85%;
+            padding: 0 15px;
+            position: absolute;
+            margin:auto;
+        }
+        .tab-content{
+            padding: 10px;   
+            width: 85%;
+        }
+        .form-group{
+            padding: 10px;
+            margin: auto;
+        }
+        .spacer {
+            height: 25px;
+        }
+        
+        /*Used to make certain things disappear    */
+        .unset {
+            display:none;
+        }
+        
+        /*Used to format the Return and Edit divs to appear as buttons. pls change colour etc.*/
+        .divButtons {
+            border-radius: 5px;
+            background-color: #2a7ab9;
+            padding: 10px;
+            width: 15%;
+            color: white;
+        }
+        .divButtons:hover {
+            background-color: #5aa6e1;
+        }
+        
+    </style>
+
+</head>
+
+<body>
+    <!-- First layer of tabs -->
+    <div class="container-fluid" id="container">
+        <ul class="nav nav-pills nav-stacked" id="navigation-bar" style="max-width:15%;">
+            <li><img src="logo.png" alt="Make It All" style="padding:10px; max-width:95%; max-height:95%;"></li>
+            <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
+            <li><a data-toggle="pill" href="#add">New Problem</a></li>
+            <li><a data-toggle="pill" href="#problems" onclick="loadProblemList()">Problems List</a></li>
+            <li><a data-toggle="pill" href="#specialists">Specialists List</a></li>
+            <li><a data-toggle="pill" href="#equipment">Hardware/Software List</a></li>
+        </ul>
+
+        <!-- First layer of tabs content -->
+        <div class="tab-content">
+
+            <!-- Add Problem Tab -->
+            <div id="home" class="tab-pane fade in active">
+                <h3>Home</h3>
+                Welcome to The Heldesk Prototype.
+
+            </div>
+            <div id="add" class="tab-pane fade">
+                <!-- Second layer of tabs- horizontal ones inside the add problem tab -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#required" data-toggle="tab">Required Information</a></li>
+                    <li><a href="#additional" data-toggle="tab">Additional Information</a></li>
+                    <li><a href="#description" data-toggle="tab">Problem Description</a></li>
+                </ul>
+                <!-- Second layer of tabs content -->
+                <div class="tab-content" id="main-content">
+                    <div id="required" class="tab-pane active">
+                        <!--Form with mandatory text boxes for entry -->
+                        <form id="RequiredInfoForm">
+                            <div class="form-group">
+                                <label for="caller">Caller Name</label>
+                                <input type="text" class="form-control" id="caller" placeholder="Joe Bloggs">
+                                <label for="operator">Helpdesk Operator Name</label>
+                                <input type="text" class="form-control" id="operator" placeholder="Alice Smith">
+                                <label for="time">Call Time/Date</label>
+                                <input type="text" class="form-control" id="time" placeholder="06/11/2017 18:50">
+                                <label for="serial">Reason for Call</label>
+                                <input type="text" class="form-control" id="reason" placeholder="Printer is not Working...">
+                                <label for="hardware/software">Hardware/Software</label>
+                                <select class="form-control" id="hardwaresoftware" placeholder="Hardware or Software problem" onchange="hideOption()">
+									<option>Hardware</option>
+									<option>Software</option>
+								</select>
+                                <label for="hardware" id="hardwareLabel">Hardware Affected</label>
+                                <input type="text" class="form-control" id="hardware" placeholder="Kodak Printer">
+                                <label for="software" id="softwareLabel" style="display:none">Software Affected</label>
+                                <input type="text" class="form-control" id="software" placeholder="Photoshop" style="display:none">
+                                <label for="reason">Reason for Call</label>
+                                <input type="text" class="form-control" id="reason" placeholder="eg. Software keeps crashing">
+                                <label for="os">Operating System</label>
+                                <input type="text" class="form-control" id="os" placeholder="Windows/Mac OS/Linux">
+                                <label for="type">Problem Type</label>
+                                <input type="text" class="form-control" id="type" placeholder="Please select most appropriate">
+                                <div class="spacer"></div>
+                                <input type="submit" id="firstPageSubmit" class="divButtons" />
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--Form with non-mandatory text boxes for entry, fillable later in editing -->
+                    <div id="additional" class="tab-pane">
+                        <form id="ExtraInfoForm">
+                            <div class="form-group">
+                                <label for="callerId">Caller ID</label>
+                                <input type="text" class="form-control" id="callerId" placeholder="p343231">
+                                <label for="callerJob">Caller Job</label>
+                                <input type="text" class="form-control" id="callerJob" placeholder="Programmer">
+                                <label for="callerDept">Caller Department</label>
+                                <input type="text" class="form-control" id="callerDept" placeholder="Sales">
+                                <label for="CallerTelNum">Caller Telephone Number</label>
+                                <input type="text" class="form-control" id="callerTelNum" placeholder="07829473628">
+                                <label for="hardwareSerial" id="hardwareSerialLabel">Hardware Serial Number</label>
+                                <input type="text" class="form-control" id="hardwareSerial" placeholder="C-40392-B">
+                                <label for="softwareId" id="softwareIdLabel" style="display:none">Software ID</label>
+                                <input type="text" class="form-control" id="softwareId" placeholder="Photoshop" style="display:none">
+                                <label for="softwareLicence" id="softwareLicenceLabel" style="display:none">Software Licenced?</label>
+                                <select class="form-control" id="softwareLicence" placeholder="Select an option" style="display:none">
+									<option>Yes</option>
+									<option>No</option>
+								</select>
+                                <label for="softwareSupport" id="softwareSupportLabel" style="display:none">Software Supported?</label>
+                                <select class="form-control" id="softwareSupport" placeholder="Select an option" style="display:none">
+									<option>Yes</option>
+									<option>No</option>				
+								</select>
+                                <label for="specialistId" id="specialistIdLabel">Assigned Specialist ID</label>
+                                <input type="text" class="form-control" id="specialistId" placeholder="S10987">
+                                <label for="specialistName" id="specialistNameLabel">Assigned Specialist Name</label>
+                                <input type="text" class="form-control" id="specialistName" placeholder="John Peters">
+                                <div class="spacer"></div>
+                                <input type="submit" id="firstPageSubmit" class="divButtons" />
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Final New Problem Tab for entering description, available on selecting problem from list -->
+                    <div id="description" class="tab-pane">
+                        <form id="ProblemDescForm">
+                            <div class="form-group">
+                                <label for="problemDesc" id="problemDescLabel">Problem Description</label>
+                                <input type="textarea" rows="5"  class="form-control" id="problemDesc" placeholder="Please enter a description of the problem">
+                                <div class="spacer"></div>
+                                <input type="submit" id="firstPageSubmit" class="divButtons" /> 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- The other vertical tabs -->
+            </div>
+            <div id="problems" class="tab-pane fade">
+                <div id="problemList" class="tab-content">
+                    <!--Form with mandatory text boxes for entry -->
+                    <h3>Problems List</h3>
+                    <input type="text" id="problemSearch" onkeyup="filterProblemTable()" placeholder="Search for Problem Types" style="width: 20%;">
+                    <table id="problemTable" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0,'problemTable')">Problem ID</th>
+                                <th onclick="sortTable(1,'problemTable')">Date/Time Opened</th>
+                                <th onclick="sortTable(2,'problemTable')">Name/ID of Caller</th>
+                                <th onclick="sortTable(3,'problemTable')">Helpdesk Operator</th>
+                                <th onclick="sortTable(4,'problemTable')">Hardware/Software</th>
+                                <th onclick="sortTable(5,'problemTable')">Problem Type</th>
+                                <th onclick="sortTable(6,'problemTable')">Specialist Assigned</th>
+                                <th onclick="sortTable(7,'problemTable')">Date/Time Solved</th>
+                                <th onclick="sortTable(8,'problemTable')">Solved By</th>
+                                <th onclick="sortTable(9,'problemTable')">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="success">
+                                <td>119</td>
+                                <td>5/11/17 8.55am</td>
+                                <td>Geri Halliwell</td>
+                                <td>Alice</td>
+                                <td>Software</td>
+                                <td>Photoshop</td>
+                                <td>Kenny Loggins</td>
+                                <td>5/11/17 12.14pm</td>
+                                <td>Kenny Loggins</td>
+                                <td>Solved</td>
+                            </tr>
+                            <tr class="success">
+                                <td class="problemID" id="123">120</td>
+                                <td>5/11/17 9.23am</td>
+                                <td>Sean Murphy</td>
+                                <td>Alice</td>
+                                <td>Hardware</td>
+                                <td>Printing</td>
+                                <td>Dean Fume</td>
+                                <td>5/11/17 9.37am</td>
+                                <td>Dean Fume</td>
+                                <td>Solved</td>
+                            </tr>
+                            <tr class="warning">
+                                <td class="problemID" id="124">121</td>
+                                <td>5/11/17 9.34am</td>
+                                <td>Billy Squier</td>
+                                <td>Alice</td>
+                                <td>Hardware</td>
+                                <td>Printing Jam</td>
+                                <td>Ray Parker Jr.</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr class="success">
+                                <td class="problemID" id="125">122</td>
+                                <td>5/11/17 9.57am</td>
+                                <td>Sean Murphy</td>
+                                <td>Alice</td>
+                                <td>Hardware</td>
+                                <td>Printing</td>
+                                <td>Dean Fume</td>
+                                <td>5/11/17 10.07am</td>
+                                <td>Dean Fume</td>
+                                <td>Solved</td>
+                            </tr>
+
+                            <tr class="warning">
+                                <td class="problemID" id="124">123</td>
+                                <td>5/11/17 10.03am</td>
+                                <td>Billy Squier</td>
+                                <td>Alice</td>
+                                <td>Hardware</td>
+                                <td>Servers</td>
+                                <td>Kenny Loggins</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>Pending</td>
+                            </tr>
+                            <tr class="danger">
+                                <td>124</td>
+                                <td>5/11/17 11.47am</td>
+                                <td>Billy Joel</td>
+                                <td>Alice</td>
+                                <td>Software</td>
+                                <td>Microsoft Access</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>Unassigned</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="viewProblem" class="fade">
+                </div>
+                <div id="editProblem" class="fade">
+                </div>
+            </div>
+            <div id="specialists" class="tab-pane fade">
+                <h3>Specialists</h3>
+                <input type="text" id="specialistSearch" onkeyup="filterSpecialistTable()" placeholder="Search for ID">
+                <table id="specialistTable" class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0,'specialistTable')">Specialist ID</th>
+                            <th onclick="sortTable(1,'specialistTable')">Name of Specialist</th>
+                            <th onclick="sortTable(2,'specialistTable')">Specialism</th>
+                            <th onclick="sortTable(3,'specialistTable')">No. of Current problems</th>
+                            <th onclick="sortTable(4,'specialistTable')">No. Completed Problems</th>
+                            <th onclick="sortTable(5,'specialistTable')">Personnel ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>303</td>
+                            <td>Dean Fume</td>
+                            <td>Printing, Servers</td>
+                            <td>0</td>
+                            <td>2</td>
+                            <td>1243</td>
+                        </tr>
+
+                        <tr>
+                            <td>304</td>
+                            <td>Ray Parker Jr.</td>
+                            <td>Printing Jam, Adobe Studio</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1203</td>
+                        </tr>
+
+                        <tr>
+                            <td>305</td>
+                            <td>Daryl Hall</td>
+                            <td>Microsoft Office</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>1301</td>
+                        </tr>
+
+                        <tr>
+                            <td>306</td>
+                            <td>Kenny Loggins</td>
+                            <td>Photoshop, Servers</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>1343</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="equipment" class="tab-pane fade">
+
+                <!-- Hardware and Software tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#hardwareTab" data-toggle="tab">Hardware</a></li>
+                    <li><a href="#softwareTab" data-toggle="tab">Software</a></li>
+                </ul>
+
+                <!-- Hardware and Software tab content -->
+                <div class="tab-content" id="main-content">
+                    <div id="hardwareTab" class="tab-pane active" style="padding: 5px; max-width:95%">
+                        <input type="text" id="hardwareSearch" onkeyup="filterHardwareTable()" placeholder="Search for Product Type" style="width: 20%;">
+                        <table id="hardwareTable" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable(0,'hardwareTable')">Hardware ID</th>
+                                    <th onclick="sortTable(1,'hardwareTable')">Hardware Type</th>
+                                    <th onclick="sortTable(2,'hardwareTable')">Make</th>
+                                    <th onclick="sortTable(3,'hardwareTable')">Serial No.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0023</td>
+                                    <td>Switch</td>
+                                    <td>Cisco</td>
+                                    <td>01234675</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0024</td>
+                                    <td>Distro</td>
+                                    <td>HP</td>
+                                    <td>113467869</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0025</td>
+                                    <td>Printer</td>
+                                    <td>Industrial Ink Inc.</td>
+                                    <td>09237845673</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0026</td>
+                                    <td>Router</td>
+                                    <td>NETGEAR</td>
+                                    <td>1125364781A</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="softwareTab" class="tab-pane" style="padding: 5px; max-width:95%;">
+                        <input type="text" id="softwareSearch" onkeyup="filterSoftwareTable()" placeholder="Search for Product Type" style="width: 20%;">
+                        <table id="softwareTable" class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th onclick="sortTable(0,'softwareTable')">Software ID</th>
+                                    <th onclick="sortTable(1,'softwareTable')">Software Type</th>
+                                    <th onclick="sortTable(2,'softwareTable')">Licenced</th>
+                                    <th onclick="sortTable(3,'softwareTable')">Supported</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0043</td>
+                                    <td>Project Management</td>
+                                    <td>Yes</td>
+                                    <td>No</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0044</td>
+                                    <td>Word Processing</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0045</td>
+                                    <td>Forum software</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+
+                                <tr>
+                                    <td>0046</td>
+                                    <td>Freeware</td>
+                                    <td>No</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>0047</td>
+                                    <td>Photoshop</td>
+                                    <td>Yes</td>
+                                    <td>Yes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
